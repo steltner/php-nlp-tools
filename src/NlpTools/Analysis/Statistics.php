@@ -109,7 +109,7 @@ abstract class Statistics
      * 
      * @return mixed
      */
-    abstract public function numberofDocuments()
+    public function numberofDocuments()
     {
 
         return $this->numberofDocuments;
