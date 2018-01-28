@@ -36,7 +36,7 @@ class HiemstraLM implements ScoringInterface
         $score = 0;
 
         if($tf != 0){
-            $score += log(1 + ( ($this->c * $tf * $collectionLength) / ((1-$this->c) * $termFrequency * $docLength)));
+            $score += $keyFrequency * log(1 + ( ($this->c * $tf * $collectionLength) / ((1-$this->c) * $termFrequency * $docLength)));
         }
 
         return $score;

@@ -29,20 +29,25 @@ class BM25 implements ScoringInterface
 
     const B = 0.75;
 
-    const K = 1.2;
+    const K1 = 1.2;
+
+    const K3 = 1000;
 
     const D = 1;
 
     protected $b;
 
-    protected $k;
+    protected $k1;
+
+    protected $k3;
 
     protected $d;
 
-    public function __construct($b = self::B, $k = self::K, $d = self::D)
+    public function __construct($b = self::B, $k1 = self::K1, $k3 = self::K3, $d = self::D)
     {
         $this->b = $b;
-        $this->k = $k;
+        $this->k1 = $k1;
+        $this->k3 = $k3;
         $this->d = $d;
     }
 
@@ -59,9 +64,9 @@ class BM25 implements ScoringInterface
         if($tf != 0){
             $idf = log(1 + (($collectionCount-$documentFrequency+0.5)/($documentFrequency + 0.5)));
             $avg_dl = $docLength/$collectionLength;
-            $num = $tf * ($this->k + 1);
-            $denom = $tf + $this->k * (1 - $this->b + $this->b * ($docLength / $avg_dl));
-            $score += $idf * (($num / $denom) + $this->d);
+            $num = $tf * ($this->k1 + 1);
+            $denom = $tf + $this->k1 * (1 - $this->b + $this->b * ($docLength / $avg_dl));
+            $score += (($this->k3 + 1) * $keyFrequency/($this->k3 + $keyFrequency)) * $idf * (($num / $denom) + $this->d);
         }
 
         return $score;

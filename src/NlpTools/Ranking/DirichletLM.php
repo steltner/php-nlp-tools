@@ -22,13 +22,13 @@ use NlpTools\Ranking\ScoringInterface;
 class DirichletLM implements ScoringInterface
 {
 
-    const LAMBDA = 2500;
+    const MU = 2500;
 
-    protected $lambda;
+    protected $mu;
 
-    public function __construct($lambda = self::LAMBDA)
+    public function __construct($mu = self::MU)
     {
-        $this->lambda = $lambda;
+        $this->mu = $mu;
 
     }
  
@@ -42,7 +42,7 @@ class DirichletLM implements ScoringInterface
 
         if($tf != 0){
             $smoothed_probability = $termFrequency / $collectionLength;
-            $score += log(1 + ($tf + $this->lambda * $smoothed_probability) / ($docLength + $this->lambda));
+            $score += $keyFrequency * log(1 + ($tf + $this->mu * $smoothed_probability) / ($docLength + $this->mu));
 
         }
 
