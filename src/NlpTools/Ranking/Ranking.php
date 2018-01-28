@@ -51,9 +51,11 @@ class Ranking extends AbstractRanking
         $this->query = $q;
 
         $this->score = array();
+        
+        $terms = array_unique($this->query->getDocumentData());
 
         //∑(Document, Query)
-        foreach ($this->query->getDocumentData() as $term){
+        foreach ($terms as $term){
             $documentFrequency = $this->stats->documentFrequency($term);
             $keyFrequency = $this->keyFrequency($this->query->getDocumentData(), $term);
             $termFrequency = $this->stats->termFrequency($term);

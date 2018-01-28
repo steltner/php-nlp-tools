@@ -61,7 +61,7 @@ class SPLDistribution implements ScoringInterface
             }
             $exp = $tf/($tf + 1);
 
-            $score += -log((pow($lambda, $exp) - $lambda) / (1 - $lambda));
+            $score += $keyFrequency * (-log((pow($lambda, $exp) - $lambda) / (1 - $lambda)));
         }
 
         return $score;

@@ -60,7 +60,7 @@ class LLDistribution implements ScoringInterface
               $lambda = 0.9999999999;
             }
 
-            $score += -log($lambda / ($tf + $lambda));
+            $score += $keyFrequency * (-log($lambda / ($tf + $lambda)));
         }
 
         return $score;

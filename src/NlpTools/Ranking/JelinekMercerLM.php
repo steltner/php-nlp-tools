@@ -22,15 +22,15 @@ use NlpTools\Ranking\ScoringInterface;
 class JelinekMercerLM implements ScoringInterface
 {
 
-    const MU = 0.20;
+    const LAMBDA = 0.20;
 
     protected $math;
 
-    protected $mu;
+    protected $lambda;
 
-    public function __construct($mu = self::MU)
+    public function __construct($lambda = self::LAMBDA)
     {
-        $this->mu = $mu;
+        $this->lambda = $lambda;
 
     }
  
@@ -44,7 +44,7 @@ class JelinekMercerLM implements ScoringInterface
 
         if($tf != 0){
             $smoothed_probability = $termFrequency / $collectionLength;
-            $score += log(1 + (((1 - $this->mu) * $tf) / $docLength) + ($this->mu * $smoothed_probability));
+            $score += $keyFrequency * log(1 + (((1 - $this->lambda) * $tf) / $docLength) + ($this->lambda * $smoothed_probability));
         }
 
         return $score;

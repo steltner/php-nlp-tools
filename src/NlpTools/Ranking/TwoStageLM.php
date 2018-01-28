@@ -27,15 +27,15 @@ use NlpTools\Ranking\ScoringInterface;
 class TwoStageLM implements ScoringInterface
 {
 
-    const MU = 0.20;
+    const LAMBDA = 0.20;
 
-    const LAMBDA = 2500;
+    const MU = 2500;
 
     protected $lambda;
 
     protected $mu;
 
-    public function __construct($mu = self::MU, $lambda = self::LAMBDA)
+    public function __construct($lambda = self::LAMBDA, $mu = self::MU)
     {
         $this->mu = $mu;
         $this->lambda = $lambda;
@@ -51,7 +51,7 @@ class TwoStageLM implements ScoringInterface
 
         if($tf != 0){
             $smoothed_probability = $termFrequency / $collectionLength;
-            $score += log(1 + (((1 - $this->mu) * ($tf + ($this->lambda * $smoothed_probability)) / ($docLength + $this->lambda)) + ($this->mu * $smoothed_probability)));
+            $score += $keyFrequency * log(1 + (((1 - $this->lambda) * ($tf + ($this->mu * $smoothed_probability)) / ($docLength + $this->mu)) + ($this->lambda * $smoothed_probability)));
 
         }
 
