@@ -5,7 +5,7 @@ namespace NlpTools\Ranking;
 use NlpTools\Documents\TrainingSet;
 use NlpTools\Ranking\ScoringInterface;
 use NlpTools\Documents\DocumentInterface;
-use NlpTools\Analysis\Idf;
+use NlpTools\Analysis\Tf;
 
 
 /**
@@ -30,7 +30,7 @@ class Ranking extends AbstractRanking
     public function __construct(ScoringInterface $type, TrainingSet $tset)
     {
         parent::__construct($tset);
-        $this->stats = new Idf($this->tset);
+        $this->stats = new Tf($this->tset);
         $this->type = $type;
 
         if ($this->type == null) {

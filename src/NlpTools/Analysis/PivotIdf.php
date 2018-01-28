@@ -43,25 +43,4 @@ class PivotIdf extends Statistics
 
     }
 
-    /**
-     * Returns number of occurences of the $term in a document with a known $key.
-     * (tf)
-     * While FreqDist Class is originally implemented as a one-off use to get tf from a collection of 
-     * tokens, this should be used to get tf in relation to the entire corpus collection. Using this in 
-     * Ranking should reduce reindexing time.
-     *
-     * @param  string $term
-     * @param  int $key
-     * @return int
-     */
-    public function tf($key, $term)
-    {
-        if (isset($this->tf[$key][$term])) {
-            return $this->tf[$key][$term];
-        } else {
-            return 0;
-        }
-    }
-
-
 }
