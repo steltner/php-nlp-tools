@@ -121,23 +121,25 @@ These are specified via the **Ranking(model, documentset)** class.
 
 1. LLDistribution(type) - Log-logistic distribution.
 2. SPLDistribution(type) -  Smoothed Power-Law (SPL) distribution.
-*Types:*
 
-1 - Document Frequency
+&nbsp;&nbsp;&nbsp;*Types:*
 
-2 - Term Frequency
+&nbsp;&nbsp;&nbsp;1 - Document Frequency
+
+&nbsp;&nbsp;&nbsp;2 - Term Frequency
 
 
 ***Divergence-From-Independence (DFI)***
 
 1. DFI(type) - Saturated measure of distance from independence.
-*Types:*
 
-1 - Saturated
+&nbsp;&nbsp;&nbsp;*Types:*
 
-2 - Chi-squared
+&nbsp;&nbsp;&nbsp;1 - Saturated
 
-3 - Standardized
+&nbsp;&nbsp;&nbsp;2 - Chi-squared
+
+&nbsp;&nbsp;&nbsp;3 - Standardized
 
 2. IRRA12() -  Term weighting model developed on the basis of Shannon’s [Information Theory](https://en.wikipedia.org/wiki/Information_theory). 
 
