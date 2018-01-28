@@ -117,13 +117,22 @@ These are specified via the **Ranking(model, documentset)** class.
 4. AbsoluteDiscountingLM() - Absolute Discounting smoothing method.
 5. TwoStageLM() - Leave-one-out method. This is also a generalization of both DirichletLM and JelinekMercerLM methods.
 
+***Information-based Models***
+
+1. LLDistribution(type) - Log-logistic distribution.
+2. SPLDistribution(type) -  Smoothed Power-Law (SPL) distribution.
+&nbsp;*Types:*
+&nbsp;1 - Document Frequency
+&nbsp;2 - Term Frequency
 
 ***Divergence-From-Independence (DFI)***
 
-1. DFI(1) - Saturated measure of distance from independence.
-2. DFI(2) - Normalized chi-squared measure of distance from independence.
-3. DFI(3) - Standardized measure of distance from independence.
-4. IRRA12() -  Term weighting model developed on the basis of Shannon’s [Information Theory](https://en.wikipedia.org/wiki/Information_theory). 
+1. DFI(type) - Saturated measure of distance from independence.
+&nbsp;*Types:*
+&nbsp;1 - Saturated
+&nbsp;2 - Chi-squared
+&nbsp;3 - Standardized
+2. IRRA12() -  Term weighting model developed on the basis of Shannon’s [Information Theory](https://en.wikipedia.org/wiki/Information_theory). 
 
 
 #### [DFR Framework](http://terrier.org/docs/v4.2/dfr_description.html) ####
