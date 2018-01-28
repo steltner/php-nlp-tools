@@ -4,7 +4,7 @@ namespace NlpTools\Ranking;
 
 use NlpTools\Documents\TrainingSet;
 use NlpTools\Documents\DocumentInterface;
-use NlpTools\Analysis\Idf;
+use NlpTools\Analysis\Tf;
 use NlpTools\Ranking\BasicModel\BasicModelInterface;
 use NlpTools\Ranking\AfterEffect\AfterEffectInterface;
 use NlpTools\Ranking\Normalization\NormalizationInterface;
@@ -47,7 +47,7 @@ class DFRRanking extends AbstractRanking
         $this->basicmodel    = $basicmodel;
         $this->aftereffect    = $aftereffect;
         $this->normalization    = $normalization;
-        $this->stats = new Idf($this->tset);
+        $this->stats = new Tf($this->tset);
 
         if ($this->basicmodel == null || $this->aftereffect == null || $this->normalization == null) {
             throw new \Exception("Null Parameters not allowed.");

@@ -84,7 +84,7 @@ abstract class Statistics
     /**
      * Returns number of occurences of the $term in a document with a known $key.
      * (tf)
-     * While FreqDist Class is originally implemented as a one-off use to get tf from a collection of 
+     * While FreqDist Class is originally implemented as a one-off use to get tf from an array of 
      * tokens, this should be used to get tf in relation to the entire corpus collection. Using this in 
      * Ranking should reduce reindexing time.
      *
@@ -95,32 +95,29 @@ abstract class Statistics
     abstract public function tf($key, $term);
 
     /**
-     * Returns number of all tokens in a document with a known $key.
+     * Returns counted tokens in the entire collection.
      * 
-     * @param  int $key
-     * @return int
-     */
-    public function numberofDocumentTokens($key)
-    {
-        if (isset($this->tf[$key])) {
-            return array_sum($this->tf[$key]);
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Returns unique terms from a known $key.
-     * (hapax legomena)
-     *
      * @param  int $key
      * @return array
      */
-    public function hapaxes($key)
+    public function index()
     {
-        return array_filter($this->tf[$key], function($term) {
-            return $term == 1;
-        });
+        return $this->termFrequency;
+    }
+
+    /**
+     * Returns counted tokens of a document with a known $key.
+     * 
+     * @param  int $key
+     * @return array
+     */
+    public function indexByKey($key)
+    {
+        if (isset($this->tf[$key])) {
+            return $this->tf[$key];
+        } else {
+            throw new \Exception('Index offset undefined.');
+        }
     }
 
     /**
@@ -168,13 +165,12 @@ abstract class Statistics
     }
 
     /**
-     * Returns number of all tokens in the entire collection.
+     * Returns total number of all tokens in the entire collection.
      * 
      * @return int
      */
     public function numberofCollectionTokens()
     {
-
         return $this->numberofCollectionTokens;
     }
 
