@@ -21,9 +21,7 @@ abstract class Statistics
     protected $numberofDocuments;
     protected $termFrequency;
     protected $documentFrequency;
-    protected $numberofDocumentTokens;
     protected $tf;
-    protected $hapaxes;
 
 
     /**
@@ -42,13 +40,10 @@ abstract class Statistics
         $this->numberofCollectionTokens = 0;
         $this->numberofDocuments = 0;
         foreach ($tset as $class=>$doc) {
-            $this->numberofDocumentTokens[$class] = 0;
             $this->numberofDocuments++;
             $tokens = $ff->getFeatureArray($class,$doc);
             $flag = array();
-            $this->hapaxes[$class] = array();
             foreach ($tokens as $term) {
-                    $this->numberofDocumentTokens[$class]++;
                     $this->numberofCollectionTokens++;
                     $flag[$term] = isset($flag[$term]) && $flag[$term] === true ? true : false;
 
@@ -56,7 +51,6 @@ abstract class Statistics
                         $this->tf[$class][$term] = 0;
                     }
                     $this->tf[$class][$term]++;
-
 
                     if (isset($this->termFrequency[$term])){
                         $this->termFrequency[$term]++;
@@ -74,11 +68,7 @@ abstract class Statistics
                         $this->documentFrequency[$term] = 1;
                     }
             }
-            foreach ($this->tf[$class] as $sample => $count) {
-                if ($count == 1) {
-                    $this->hapaxes[$class][] = $sample;
-                }
-            }
+            
         }
 
     }
@@ -103,6 +93,35 @@ abstract class Statistics
      * @return int
      */
     abstract public function tf($key, $term);
+
+    /**
+     * Returns number of all tokens in a document with a known $key.
+     * 
+     * @param  int $key
+     * @return int
+     */
+    public function numberofDocumentTokens($key)
+    {
+        if (isset($this->tf[$key])) {
+            return array_sum($this->tf[$key]);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Returns unique terms from a known $key.
+     * (hapax legomena)
+     *
+     * @param  int $key
+     * @return array
+     */
+    public function hapaxes($key)
+    {
+        return array_filter($this->tf[$key], function($term) {
+            return $term == 1;
+        });
+    }
 
     /**
      * Returns number of documents in the collection.
@@ -157,34 +176,6 @@ abstract class Statistics
     {
 
         return $this->numberofCollectionTokens;
-    }
-
-    /**
-     * Returns number of all tokens in a document with a known $key.
-     * 
-     * @param  int $key
-     * @return int
-     */
-    public function numberofDocumentTokens($key)
-    {
-        if (isset($this->numberofDocumentTokens[$key])) {
-            return $this->numberofDocumentTokens[$key];
-        } else {
-            return 0;
-        }
-    }
-
-
-    /**
-     * Returns unique terms from a known $key.
-     * (hapax legomena)
-     *
-     * @param  int $key
-     * @return array
-     */
-    public function hapaxes($key)
-    {
-        return $this->hapaxes[$key];
     }
 
 
