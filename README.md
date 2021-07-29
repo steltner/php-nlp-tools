@@ -1,7 +1,7 @@
 [PHP NlpTools](http://php-nlp-tools.com/)
 =============
 
-NlpTools is a set of php 5.3+ classes for beginner to
+NlpTools is a set of php classes for beginner to
 semi advanced natural language processing work.
 
 This is forked from [php-nlp-tools](https://github.com/angeloskath/php-nlp-tools) and it contains some additions that was helpful for me at the time.
