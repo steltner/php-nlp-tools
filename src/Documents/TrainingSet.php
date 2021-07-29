@@ -2,11 +2,18 @@
 
 namespace NlpTools\Documents;
 
+use ArrayAccess;
+use Countable;
+use Exception;
+use Iterator;
+use function count;
+use function key;
+
 /**
  * A collection of TrainingDocument objects. It implements many built
  * in php interfaces for ease of use.
  */
-class TrainingSet implements \Iterator,\ArrayAccess,\Countable
+class TrainingSet implements Iterator, ArrayAccess, Countable
 {
     const CLASS_AS_KEY = 1;
     const OFFSET_AS_KEY = 2;
@@ -30,15 +37,16 @@ class TrainingSet implements \Iterator,\ArrayAccess,\Countable
     /**
      * Add a document to the set.
      *
-     * @param $class The documents actual class
-     * @param $d The Document
+     * @param string $class The documents actual class
+     * @param DocumentInterface $d The Document
      * @return void
      */
     public function addDocument($class, DocumentInterface $d)
     {
-        $this->documents[] = new TrainingDocument($class,$d);
+        $this->documents[] = new TrainingDocument($class, $d);
         $this->classSet[$class] = 1;
     }
+
     // return the classset
     public function getClassSet()
     {
@@ -81,18 +89,22 @@ class TrainingSet implements \Iterator,\ArrayAccess,\Countable
         reset($this->documents);
         $this->currentDocument = current($this->documents);
     }
+
     public function next()
     {
         $this->currentDocument = next($this->documents);
     }
+
     public function valid()
     {
-        return $this->currentDocument!=false;
+        return $this->currentDocument != false;
     }
+
     public function current()
     {
         return $this->currentDocument;
     }
+
     public function key()
     {
         switch ($this->keytype) {
@@ -102,24 +114,27 @@ class TrainingSet implements \Iterator,\ArrayAccess,\Countable
                 return key($this->documents);
             default:
                 // we should never be here
-                throw new \Exception("Undefined type as key");
+                throw new Exception("Undefined type as key");
         }
     }
     // === Implementation of \Iterator interface finished ===
 
     // ====== Implementation of \ArrayAccess interface =========
-    public function offsetSet($key,$value)
+    public function offsetSet($key, $value)
     {
-        throw new \Exception("Shouldn't add documents this way, add them through addDocument()");
+        throw new Exception("Shouldn't add documents this way, add them through addDocument()");
     }
+
     public function offsetUnset($key)
     {
-        throw new \Exception("Cannot unset any document");
+        throw new Exception("Cannot unset any document");
     }
+
     public function offsetGet($key)
     {
         return $this->documents[$key];
     }
+
     public function offsetExists($key)
     {
         return isset($this->documents[$key]);

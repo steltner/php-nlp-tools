@@ -12,13 +12,13 @@ class JaccardIndex implements SimilarityInterface, DistanceInterface
      */
     public function similarity(&$A, &$B)
     {
-        $a = array_fill_keys($A,1);
-        $b = array_fill_keys($B,1);
+        $a = array_fill_keys($A, 1);
+        $b = array_fill_keys($B, 1);
 
-        $intersect = count(array_intersect_key($a,$b));
-        $union = count(array_fill_keys(array_merge($A,$B),1));
+        $intersect = count(array_intersect_key($a, $b));
+        $union = count(array_fill_keys(array_merge($A, $B), 1));
 
-        return $intersect/$union;
+        return $intersect / $union;
     }
 
     /**
@@ -26,7 +26,6 @@ class JaccardIndex implements SimilarityInterface, DistanceInterface
      */
     public function dist(&$A, &$B)
     {
-        return 1-$this->similarity($A,$B);
+        return 1 - $this->similarity($A, $B);
     }
-
 }

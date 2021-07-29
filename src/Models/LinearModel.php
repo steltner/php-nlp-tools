@@ -15,20 +15,23 @@ namespace NlpTools\Models;
 class LinearModel
 {
     protected $l;
+
     public function __construct(array $l)
     {
         $this->l = $l;
     }
+
     /**
      * Get the weight for a given feature
      *
-     * @param  string $feature The feature for which the weight will be returned
+     * @param string $feature The feature for which the weight will be returned
      * @return float  The weight
      */
     public function getWeight($feature)
     {
-        if (!isset($this->l[$feature])) return 0;
-        else return $this->l[$feature];
+        if (!isset($this->l[$feature])) {
+            return 0;
+        } else return $this->l[$feature];
     }
 
     /**

@@ -35,18 +35,18 @@ class Hierarchical extends Clusterer
         // the same data exists in $documents, $docs and
         // the only useful parts are in $this->strategy
         $docs = $this->getDocumentArray($documents, $ff);
-        $this->strategy->initializeStrategy($this->dist,$docs);
+        $this->strategy->initializeStrategy($this->dist, $docs);
         unset($docs); // perhaps save some memory
 
         // start with all the documents being in their
         // own cluster we 'll merge later
-        $clusters = range(0,count($documents)-1);
+        $clusters = range(0, count($documents) - 1);
         $c = count($clusters);
-        while ($c>1) {
+        while ($c > 1) {
             // ask the strategy which to merge. The strategy
             // will assume that we will indeed merge the returned clusters
-            list($i,$j) = $this->strategy->getNextMerge();
-            $clusters[$i] = array($clusters[$i],$clusters[$j]);
+            list($i, $j) = $this->strategy->getNextMerge();
+            $clusters[$i] = array($clusters[$i], $clusters[$j]);
             unset($clusters[$j]);
             $c--;
         }
@@ -61,21 +61,22 @@ class Hierarchical extends Clusterer
      * number of clusters (the closest power of 2 larger than
      * $NC)
      *
-     * @param  array   $tree The dendrogram to be flattened
-     * @param  integer $NC   The number of clusters to cut to
-     * @return array   The flat clusters
+     * @param array $tree The dendrogram to be flattened
+     * @param integer $NC The number of clusters to cut to
+     * @return array The flat clusters
      */
-    public static function dendrogramToClusters($tree,$NC)
+    public static function dendrogramToClusters($tree, $NC)
     {
         $clusters = $tree;
-        while (count($clusters)<$NC) {
+        while (count($clusters) < $NC) {
             $tmpc = array();
             foreach ($clusters as $subclust) {
-                if (!is_array($subclust))
+                if (!is_array($subclust)) {
                     $tmpc[] = $subclust;
-                else {
-                    foreach ($subclust as $c)
+                } else {
+                    foreach ($subclust as $c) {
                         $tmpc[] = $c;
+                    }
                 }
             }
             $clusters = $tmpc;

@@ -33,7 +33,7 @@ class RegexTokenizer implements TokenizerInterface
      * If a pattern is given with a string it is assumed to be a transformation
      * pattern used with preg_replace
      *
-     * @param  string $str The string to be tokenized
+     * @param string $str The string to be tokenized
      * @return array  The tokens
      */
     public function tokenize($str)
@@ -41,7 +41,7 @@ class RegexTokenizer implements TokenizerInterface
         $str = array($str);
         foreach ($this->patterns as $p) {
             if (!is_array($p)) $p = array($p);
-            if (count($p)==1) { // split pattern
+            if (count($p) == 1) { // split pattern
                 $this->split($str, $p[0]);
             } elseif (is_int($p[1])) { // match pattern
                 $this->match($str, $p[0], $p[1]);
@@ -93,7 +93,9 @@ class RegexTokenizer implements TokenizerInterface
     /**
      * Execute the TRANSFORM mode.
      *
-     * @param string $str The string to be tokenized
+     * @param array $str The string to be tokenized
+     * @param $pattern
+     * @param $replacement
      */
     protected function replace(array &$str, $pattern, $replacement)
     {

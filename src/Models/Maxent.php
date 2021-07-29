@@ -2,8 +2,10 @@
 
 namespace NlpTools\Models;
 
-use \NlpTools\FeatureFactories\FeatureFactoryInterface;
-use \NlpTools\Documents\TrainingSet;
+use Exception;
+use NlpTools\Documents\DocumentInterface;
+use NlpTools\FeatureFactories\FeatureFactoryInterface;
+use NlpTools\Documents\TrainingSet;
 use NlpTools\Optimizers\MaxentOptimizerInterface;
 
 /**
@@ -21,16 +23,16 @@ class Maxent extends LinearModel
      * information to the optimizer to find the weights that satisfy the
      * constraints and maximize the entropy
      *
-     * @param $ff The feature factory
-     * @param $tset A collection of training documents
-     * @param $opt An optimizer, we need a maxent optimizer
+     * @param FeatureFactoryInterface $ff The feature factory
+     * @param TrainingSet $tset A collection of training documents
+     * @param MaxentOptimizerInterface $opt An optimizer, we need a maxent optimizer
      * @return void
      */
     public function train(FeatureFactoryInterface $ff, TrainingSet $tset, MaxentOptimizerInterface $opt)
     {
         $classSet = $tset->getClassSet();
 
-        $features = $this->calculateFeatureArray($classSet,$tset,$ff);
+        $features = $this->calculateFeatureArray($classSet, $tset, $ff);
         $this->l = $opt->optimize($features);
     }
 
@@ -44,19 +46,19 @@ class Maxent extends LinearModel
      * because we want to be able to optimize externally to
      * gain speed (PHP is slow!).
      *
-     * @param $classes A set of the classes in the training set
-     * @param $tset A collection of training documents
-     * @param $ff The feature factory
+     * @param array $classes A set of the classes in the training set
+     * @param TrainingSet $tset A collection of training documents
+     * @param FeatureFactoryInterface $ff The feature factory
      * @return array An array that contains every feature for every possible class of every document
      */
     protected function calculateFeatureArray(array $classes, TrainingSet $tset, FeatureFactoryInterface $ff)
     {
         $features = array();
         $tset->setAsKey(TrainingSet::OFFSET_AS_KEY);
-        foreach ($tset as $offset=>$doc) {
+        foreach ($tset as $offset => $doc) {
             $features[$offset] = array();
             foreach ($classes as $class) {
-                $features[$offset][$class] = $ff->getFeatureArray($class,$doc);
+                $features[$offset][$class] = $ff->getFeatureArray($class, $doc);
             }
             $features[$offset]['__label__'] = $doc->getClass();
         }
@@ -69,36 +71,36 @@ class Maxent extends LinearModel
      * $class given a set of possible classes, a feature factory and
      * the model's weights l[i]
      *
-     * @param $classes The set of possible classes
-     * @param $ff The feature factory
-     * @param $d The document
-     * @param  string $class A class for which we calculate the probability
-     * @return float  The probability that document $d belongs to class $class
+     * @param array $classes The set of possible classes
+     * @param FeatureFactoryInterface $ff The feature factory
+     * @param DocumentInterface $d The document
+     * @param string $class A class for which we calculate the probability
+     * @return float The probability that document $d belongs to class $class
      */
-    public function P(array $classes,FeatureFactoryInterface $ff,DocumentInterface $d,$class)
+    public function P(array $classes, FeatureFactoryInterface $ff, DocumentInterface $d, $class)
     {
         $exps = array();
         foreach ($classes as $cl) {
             $tmp = 0.0;
-            foreach ($ff->getFeatureArray($cl,$d) as $i) {
+            foreach ($ff->getFeatureArray($cl, $d) as $i) {
                 $tmp += $this->l[$i];
             }
             $exps[$cl] = exp($tmp);
         }
 
-        return $exps[$class]/array_sum($exps);
+        return $exps[$class] / array_sum($exps);
     }
 
     /**
      * Not implemented yet.
      * Simply put:
-     * 	result += log( $this->P(..., ..., ...) ) for every doc in TrainingSet
+     *    result += log( $this->P(..., ..., ...) ) for every doc in TrainingSet
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function CLogLik(TrainingSet $tset,FeatureFactoryInterface $ff)
+    public function CLogLik(TrainingSet $tset, FeatureFactoryInterface $ff)
     {
-        throw new \Exception("Unimplemented");
+        throw new Exception("Unimplemented");
     }
 
     /**
@@ -109,5 +111,4 @@ class Maxent extends LinearModel
     {
         print_r($this->l);
     }
-
 }

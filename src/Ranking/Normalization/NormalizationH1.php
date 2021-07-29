@@ -8,24 +8,22 @@ namespace NlpTools\Ranking\Normalization;
  * the density function of the term frequency is constant. The H1 hypothesis is a
  * variant of the verbosity principle of Robertson [Robertson and Walker 1994]
  */
-
 class NormalizationH1 extends Normalization implements NormalizationInterface
 {
-
     const C = 1;
 
-	protected $c;
+    protected $c;
 
     public function __construct($c = self::C)
     {
         parent::__construct();
         $this->c = $c;
-
     }
 
-    public function normalise($tf, $docLength, $termFrequency, $collectionLength) {
-    	$avg_dl = $docLength/$collectionLength;
-    	return $tf * $this->c * ($avg_dl / $docLength);
-    }
+    public function normalise($tf, $docLength, $termFrequency, $collectionLength)
+    {
+        $avg_dl = $docLength / $collectionLength;
 
+        return $tf * $this->c * ($avg_dl / $docLength);
+    }
 }

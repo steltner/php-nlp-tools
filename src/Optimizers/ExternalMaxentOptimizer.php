@@ -57,33 +57,33 @@ class ExternalMaxentOptimizer implements MaxentOptimizerInterface
      * Open a pipe to the optimizer, send him the data encoded in json
      * and then read the stdout to get the results encoded in json
      *
-     * @param  array $feature_array The features that fired for any document for any class @see NlpTools\Models\Maxent
+     * @param array $feature_array The features that fired for any document for any class @see NlpTools\Models\Maxent
      * @return array The optimized weights
      */
     public function optimize(array &$feature_array)
     {
         // whete we will read from where we will write to
         $desrciptorspec = array(
-            0=>array('pipe','r'),
-            1=>array('pipe','w'),
-            2=>STDERR // Should that be redirected to /dev/null or like?
+            0 => array('pipe', 'r'),
+            1 => array('pipe', 'w'),
+            2 => STDERR // Should that be redirected to /dev/null or like?
         );
 
         // Run the optimizer
-        $process = proc_open($this->optimizer,$desrciptorspec,$pipes);
+        $process = proc_open($this->optimizer, $desrciptorspec, $pipes);
         if (!is_resource($process)) {
             return array();
         }
 
         // send the data
-        fwrite($pipes[0],json_encode($feature_array));
+        fwrite($pipes[0], json_encode($feature_array));
         fclose($pipes[0]);
 
         // get the weights
         $json = stream_get_contents($pipes[1]);
 
         // decode as an associative array
-        $l = json_decode( $json , true );
+        $l = json_decode($json, true);
 
         // close up the optimizer
         fclose($pipes[1]);
@@ -91,5 +91,4 @@ class ExternalMaxentOptimizer implements MaxentOptimizerInterface
 
         return $l;
     }
-
 }

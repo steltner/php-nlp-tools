@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Utilities\Search;
+namespace NlpTools\Ranking;
 
-use App\Utilities\Search\ScoringInterface;
-use App\Utilities\Math\Math;
-
+use NlpTools\Math\Math;
 
 /**
  * InB2 is a DFR class for ranking documents against a query based on Inverse Document Frequency model
@@ -16,11 +14,8 @@ use App\Utilities\Math\Math;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class InB2 implements ScoringInterface
 {
-
     const C = 1.0;
 
     protected $math;
@@ -29,9 +24,8 @@ class InB2 implements ScoringInterface
 
     public function __construct($c = self::C)
     {
-        $this->c    = 1.0;
+        $this->c = 1.0;
         $this->math = new Math();
-
     }
 
     /**
@@ -40,35 +34,30 @@ class InB2 implements ScoringInterface
      *
      * The parameter c can be set automatically, as described by He and Ounis 'Term Frequency Normalisation
      * Tuning for BM25 and DFR model', in Proceedings of ECIR'05, 2005
-     * @param  int $length
-     * @param  int $avg_dl
+     * @param int $docLength
+     * @param int $avg_dl
      * @return float
      */
     private function getTfN2($docLength, $avg_dl)
     {
-        return $this->math->DFRlog(1 + ($this->c * $avg_dl)/$docLength);
+        return $this->math->DFRlog(1 + ($this->c * $avg_dl) / $docLength);
     }
 
-
     /**
-     * @param  string $term
+     * @param string $term
      * @return float
      */
     public function score($tf, $docLength, $documentFrequency, $keyFrequency, $termFrequency, $collectionLength, $collectionCount, $uniqueTermsCount)
     {
-
         $score = 0;
 
-        if($tf != 0){
-            $avg_dl = $docLength/$collectionLength;
+        if ($tf != 0) {
+            $avg_dl = $docLength / $collectionLength;
             $TF = $tf * $this->getTfN2($docLength, $avg_dl);
             $NORM = ($termFrequency + 1) / ($documentFrequency * ($TF + 1));
-            $score += ($TF * $this->math->DFRlog(($documentFrequency+1)/0.5) * $keyFrequency * $NORM);
+            $score += ($TF * $this->math->DFRlog(($documentFrequency + 1) / 0.5) * $keyFrequency * $NORM);
         }
 
         return $score;
-
     }
-
-
 }

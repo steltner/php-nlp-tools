@@ -2,6 +2,7 @@
 
 namespace NlpTools\Utils;
 
+use InvalidArgumentException;
 use NlpTools\Classifiers\ClassifierInterface;
 use NlpTools\Documents\RawDocument;
 
@@ -62,7 +63,7 @@ class ClassifierBasedTransformation implements TransformationInterface
         }
         foreach ($transforms as $t) {
             if (!($t instanceof TransformationInterface)) {
-                throw new \InvalidArgumentException("Only instances of TransformationInterface can be registered");
+                throw new InvalidArgumentException("Only instances of TransformationInterface can be registered");
             }
         }
 

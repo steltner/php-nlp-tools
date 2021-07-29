@@ -9,12 +9,13 @@ abstract class AbstractDistribution
 {
     protected $rnd;
 
-    public function __construct(GeneratorInterface $rnd=null)
+    public function __construct(GeneratorInterface $rnd = null)
     {
-        if ($rnd == null)
+        if ($rnd == null) {
             $this->rnd = MersenneTwister::get();
-        else
+        } else {
             $this->rnd = $rnd;
+        }
     }
 
     abstract public function sample();

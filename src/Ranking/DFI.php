@@ -3,8 +3,8 @@
 namespace NlpTools\Ranking;
 
 use NlpTools\Math\Math;
-use NlpTools\Ranking\ScoringInterface;
-
+use function pow;
+use function sqrt;
 
 /**
  * Divergence from Independence (DFI) is a non-parametric/parameter-free DFR-counterpart class for ranking documents
@@ -19,11 +19,8 @@ use NlpTools\Ranking\ScoringInterface;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class DFI implements ScoringInterface
 {
-
     const SATURATED = 1;
 
     const CHI_SQUARED = 2;
@@ -40,9 +37,9 @@ class DFI implements ScoringInterface
         $this->math = new Math();
 
     }
- 
+
     /**
-     * @param  string $term
+     * @param string $term
      * @return float
      */
     public function score($tf, $docLength, $documentFrequency, $keyFrequency, $termFrequency, $collectionLength, $collectionCount, $uniqueTermsCount)
@@ -50,22 +47,19 @@ class DFI implements ScoringInterface
         $score = 0;
         $expected = ($termFrequency * $docLength) / $collectionLength;
 
-        if($tf <= $expected){
+        if ($tf <= $expected) {
             return $score;
         }
 
-            if($this->type == self::SATURATED) {
-                $measure = ($tf - $expected)/$expected;
-            } elseif($this->type == self::STANDARDIZED) {
-                $measure = ($tf - $expected) / sqrt($expected);
-            } elseif($this->type == self::CHI_SQUARED) {
-                $measure = pow(($tf - $expected), 2)/$expected;
-            }
-            $score += $keyFrequency * $this->math->DFRlog($measure + 1);
-            return $score;
-        
+        if ($this->type == self::SATURATED) {
+            $measure = ($tf - $expected) / $expected;
+        } elseif ($this->type == self::STANDARDIZED) {
+            $measure = ($tf - $expected) / sqrt($expected);
+        } elseif ($this->type == self::CHI_SQUARED) {
+            $measure = pow(($tf - $expected), 2) / $expected;
+        }
+        $score += $keyFrequency * $this->math->DFRlog($measure + 1);
 
+        return $score;
     }
-
-    
 }

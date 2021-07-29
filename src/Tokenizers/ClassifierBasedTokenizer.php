@@ -2,8 +2,8 @@
 
 namespace NlpTools\Tokenizers;
 
-use \NlpTools\Classifiers\ClassifierInterface;
-use \NlpTools\Documents\WordDocument;
+use NlpTools\Classifiers\ClassifierInterface;
+use NlpTools\Documents\WordDocument;
 
 /**
  * A tokenizer that uses a classifier (of any type) to determine if
@@ -43,7 +43,7 @@ use \NlpTools\Documents\WordDocument;
 class ClassifierBasedTokenizer implements TokenizerInterface
 {
     const EOW = 'EOW';
-    protected static $classSet = array('O','EOW');
+    protected static $classSet = array('O', 'EOW');
 
     // initial tokenizer
     protected $tok;
@@ -53,12 +53,12 @@ class ClassifierBasedTokenizer implements TokenizerInterface
     // used when joining the tokens into one
     protected $sep;
 
-    public function __construct(ClassifierInterface $cls, TokenizerInterface $tok=null,$sep=' ')
+    public function __construct(ClassifierInterface $cls, TokenizerInterface $tok = null, $sep = ' ')
     {
         if ($tok == null) {
             $this->tok = new WhitespaceAndPunctuationTokenizer();
         } else {
-            $this->tok  = $tok;
+            $this->tok = $tok;
         }
         $this->classifier = $cls;
         $this->sep = $sep;
@@ -71,7 +71,7 @@ class ClassifierBasedTokenizer implements TokenizerInterface
      * 2. Classify each token if it is an EOW
      * 3. For each token that is not an EOW add it to the next EOW token using a separator
      *
-     * @param  string $str The character sequence to be broken in tokens
+     * @param string $str The character sequence to be broken in tokens
      * @return array  The token array
      */
     public function tokenize($str)
@@ -80,8 +80,8 @@ class ClassifierBasedTokenizer implements TokenizerInterface
         // classified
         $tokens = $this->tok->tokenize($str);
         $docs = array();
-        foreach ($tokens as $offset=>$tok) {
-            $docs[] = new WordDocument($tokens,$offset,5);
+        foreach ($tokens as $offset => $tok) {
+            $docs[] = new WordDocument($tokens, $offset, 5);
         }
 
         // classify each token as an EOW or O
@@ -93,10 +93,10 @@ class ClassifierBasedTokenizer implements TokenizerInterface
         // merge O and EOW into real tokens
         $realtokens = array();
         $currentToken = array();
-        foreach ($tokens as $offset=>$tok) {
+        foreach ($tokens as $offset => $tok) {
             $currentToken[] = $tok;
             if ($tags[$offset] == self::EOW) {
-                $realtokens[] = implode($this->sep,$currentToken);
+                $realtokens[] = implode($this->sep, $currentToken);
                 $currentToken = array();
             }
         }

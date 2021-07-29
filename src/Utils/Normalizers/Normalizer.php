@@ -24,7 +24,7 @@ abstract class Normalizer implements TransformationInterface
     /**
      * Transform the word according to the class description
      *
-     * @param  string $w The word to normalize
+     * @param string $w The word to normalize
      * @return string
      */
     abstract public function normalize($w);
@@ -39,7 +39,7 @@ abstract class Normalizer implements TransformationInterface
 
     /**
      * Apply the normalize function to all the items in the array
-     * @param  array $items
+     * @param array $items
      * @return array
      */
     public function normalizeAll(array $items)
@@ -59,7 +59,7 @@ abstract class Normalizer implements TransformationInterface
      */
     public static function factory($language = "English")
     {
-        $classname = __NAMESPACE__."\\$language";
+        $classname = __NAMESPACE__ . "\\$language";
 
         return new $classname();
     }

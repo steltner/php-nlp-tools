@@ -2,9 +2,6 @@
 
 namespace NlpTools\Ranking\BasicModel;
 
-use NlpTools\Ranking\BasicModel\BasicModelInterface;
-
-
 /**
  * This class implements the BE basic model for randomness. BE stands for Bose-Einstein statistics
  *
@@ -14,11 +11,9 @@ use NlpTools\Ranking\BasicModel\BasicModelInterface;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class BE extends BasicModel implements BasicModelInterface
 {
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -27,20 +22,20 @@ class BE extends BasicModel implements BasicModelInterface
     /** Inf1(tf) = − log2(N − 1) − log2(e) + f (N + F − 1, N + F − tf − 2) − f (F, F − tf )
      * where f(n, m) is a stirling formula
      */
-    public function score($tfn, $docLength, $documentFrequency, $termFrequency, $collectionLength, $collectionCount){
-		return (
-				- $this->math->DFRlog($collectionCount - 1)
-				- $this->math->log2ofE()
-				+ $this->math->stirlingPower(
-					$collectionCount
-						+ $termFrequency
-						- 1,
-					$collectionCount
-						+ $termFrequency
-						- $tfn
-						- 2)
-				- $this->math->stirlingPower($termFrequency, $termFrequency - $tfn)
-			);
-	}
-
+    public function score($tfn, $docLength, $documentFrequency, $termFrequency, $collectionLength, $collectionCount)
+    {
+        return (
+            -$this->math->DFRlog($collectionCount - 1)
+            - $this->math->log2ofE()
+            + $this->math->stirlingPower(
+                $collectionCount
+                + $termFrequency
+                - 1,
+                $collectionCount
+                + $termFrequency
+                - $tfn
+                - 2)
+            - $this->math->stirlingPower($termFrequency, $termFrequency - $tfn)
+        );
+    }
 }

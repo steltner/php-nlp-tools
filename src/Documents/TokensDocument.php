@@ -10,10 +10,12 @@ use NlpTools\Utils\TransformationInterface;
 class TokensDocument implements DocumentInterface
 {
     protected $tokens;
+
     public function __construct(array $tokens)
     {
         $this->tokens = $tokens;
     }
+
     /**
      * Simply return the tokens received in the constructor
      * @return array The tokens array
@@ -38,7 +40,7 @@ class TokensDocument implements DocumentInterface
                     $this->tokens
                 ),
                 function ($token) {
-                    return $token!==null;
+                    return $token !== null;
                 }
             )
         );

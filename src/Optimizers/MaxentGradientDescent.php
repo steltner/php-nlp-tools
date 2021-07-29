@@ -7,7 +7,7 @@ namespace NlpTools\Optimizers;
  * log likelihood of the training data.
  *
  * See page 24 - 28 of http://nlp.stanford.edu/pubs/maxent-tutorial-slides.pdf
- * @see NlpTools\Models\Maxent
+ * @see \NlpTools\Models\Maxent
  */
 class MaxentGradientDescent extends GradientDescentOptimizer implements MaxentOptimizerInterface
 {
@@ -23,8 +23,8 @@ class MaxentGradientDescent extends GradientDescentOptimizer implements MaxentOp
      * the training data (which of course remains constant for a
      * specific set of data).
      *
-     * @param $feature_array All the data known about the training set
-     * @param $l The current set of weights to be initialized
+     * @param array $feature_array All the data known about the training set
+     * @param array $l The current set of weights to be initialized
      * @return void
      */
     protected function initParameters(array &$feature_array, array &$l)
@@ -32,7 +32,7 @@ class MaxentGradientDescent extends GradientDescentOptimizer implements MaxentOp
         $this->numerators = array();
         $this->fprime_vector = array();
         foreach ($feature_array as $doc) {
-            foreach ($doc as $class=>$features) {
+            foreach ($doc as $class => $features) {
                 if (!is_array($features)) continue;
                 foreach ($features as $fi) {
                     $l[$fi] = 0;
@@ -53,17 +53,17 @@ class MaxentGradientDescent extends GradientDescentOptimizer implements MaxentOp
      * each feature given a set of weights L and a set of features for
      * each document for each class.
      *
-     * @param $feature_array All the data known about the training set
-     * @param $l The current set of weights to be initialized
+     * @param array $feature_array All the data known about the training set
+     * @param array $l The current set of weights to be initialized
      * @return void
      */
     protected function prepareFprime(array &$feature_array, array &$l)
     {
         $this->denominators = array();
-        foreach ($feature_array as $offset=>$doc) {
-            $numerator = array_fill_keys(array_keys($doc),0.0);
+        foreach ($feature_array as $offset => $doc) {
+            $numerator = array_fill_keys(array_keys($doc), 0.0);
             $denominator = 0.0;
-            foreach ($doc as $cl=>$f) {
+            foreach ($doc as $cl => $f) {
                 if (!is_array($f)) continue;
                 $tmp = 0.0;
                 foreach ($f as $i) {
@@ -73,13 +73,13 @@ class MaxentGradientDescent extends GradientDescentOptimizer implements MaxentOp
                 $numerator[$cl] += $tmp;
                 $denominator += $tmp;
             }
-            foreach ($doc as $class=>$features) {
+            foreach ($doc as $class => $features) {
                 if (!is_array($features)) continue;
                 foreach ($features as $fi) {
                     if (!isset($this->denominators[$fi])) {
                         $this->denominators[$fi] = 0;
                     }
-                    $this->denominators[$fi] += $numerator[$class]/$denominator;
+                    $this->denominators[$fi] += $numerator[$class] / $denominator;
                 }
             }
         }
@@ -93,15 +93,14 @@ class MaxentGradientDescent extends GradientDescentOptimizer implements MaxentOp
      *
      * See page 28 of http://nlp.stanford.edu/pubs/maxent-tutorial-slides.pdf
      *
-     * @param $feature_array All the data known about the training set
-     * @param $l The current set of weights to be initialized
+     * @param array $feature_array All the data known about the training set
+     * @param array $l The current set of weights to be initialized
      * @return void
      */
     protected function Fprime(array &$feature_array, array &$l)
     {
-        foreach ($this->fprime_vector as $i=>&$fprime_i_val) {
+        foreach ($this->fprime_vector as $i => &$fprime_i_val) {
             $fprime_i_val = $this->denominators[$i] - $this->numerators[$i];
         }
     }
-
 }

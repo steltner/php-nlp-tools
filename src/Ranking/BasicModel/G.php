@@ -2,9 +2,6 @@
 
 namespace NlpTools\Ranking\BasicModel;
 
-use NlpTools\Ranking\BasicModel\BasicModelInterface;
-
-
 /**
  * This class implements the BE basic model for randomness. BE stands for Bose-Einstein statistics
  *
@@ -14,27 +11,24 @@ use NlpTools\Ranking\BasicModel\BasicModelInterface;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class G extends BasicModel implements BasicModelInterface
 {
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
-
     }
+
     /**
      * Inf1(tf) = ((-$this->math->log(1/(1+$lambda))) - $tfn) * ($this->math->log($lambda/(1+$lambda)))
      */
-    public function score($tfn, $docLength, $documentFrequency, $termFrequency, $collectionLength, $collectionCount){
-    	$F = $termFrequency + 1;
-    	$N = $collectionCount;
-    	$lambda = $termFrequency / ($collectionCount + $termFrequency);
+    public function score($tfn, $docLength, $documentFrequency, $termFrequency, $collectionLength, $collectionCount)
+    {
+        $F = $termFrequency + 1;
+        $N = $collectionCount;
+        $lambda = $termFrequency / ($collectionCount + $termFrequency);
 
-    	// original formula provides negative result, so rewrite to make positive
-    	// -log(1 / (lambda + 1)) -> log(lambda + 1)
-		return (($this->math->DFRlog($lambda + 1)) - $tfn) * ($this->math->DFRlog((1 + $lambda) / $lambda)) ;
-
-	}
-
+        // original formula provides negative result, so rewrite to make positive
+        // -log(1 / (lambda + 1)) -> log(lambda + 1)
+        return (($this->math->DFRlog($lambda + 1)) - $tfn) * ($this->math->DFRlog((1 + $lambda) / $lambda));
+    }
 }

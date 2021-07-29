@@ -10,9 +10,9 @@ abstract class Clusterer
     /**
      * Group the documents together
      *
-     * @param  TrainingSet             $documents The documents to be clustered
-     * @param  FeatureFactoryInterface $ff        A feature factory to transform the documents given
-     * @return array                   The clusters, an array containing arrays of offsets for the documents
+     * @param TrainingSet $documents The documents to be clustered
+     * @param FeatureFactoryInterface $ff A feature factory to transform the documents given
+     * @return array The clusters, an array containing arrays of offsets for the documents
      */
     abstract public function cluster(TrainingSet $documents, FeatureFactoryInterface $ff);
 
@@ -23,7 +23,7 @@ abstract class Clusterer
     {
         $docs = array();
         foreach ($documents as $d) {
-            $docs[] = $ff->getFeatureArray('',$d);
+            $docs[] = $ff->getFeatureArray('', $d);
         }
 
         return $docs;

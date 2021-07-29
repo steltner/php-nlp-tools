@@ -15,18 +15,20 @@ class TrainingDocument implements DocumentInterface
     protected $class;
 
     /**
-     * @param string            $class The actual class of the Document $d
-     * @param DocumentInterface $d     The document to be decorated
+     * @param string $class The actual class of the Document $d
+     * @param DocumentInterface $d The document to be decorated
      */
     public function __construct($class, DocumentInterface $d)
     {
         $this->d = $d;
         $this->class = $class;
     }
+
     public function getDocumentData()
     {
         return $this->d->getDocumentData();
     }
+
     public function getClass()
     {
         return $this->class;

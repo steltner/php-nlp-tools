@@ -3,12 +3,10 @@
 namespace NlpTools\Ranking;
 
 use NlpTools\Documents\TrainingSet;
-use NlpTools\Ranking\VectorScoringInterface;
 use NlpTools\Documents\DocumentInterface;
 use NlpTools\FeatureFactories\TfIdfFeatureFactory;
 use NlpTools\Analysis\Idf;
 use NlpTools\Math\Math;
-
 
 /**
  * Vector Space Model is a Class for calculating Relevance ranking by comparing the deviation of angles
@@ -22,12 +20,8 @@ use NlpTools\Math\Math;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class VectorSpaceModel extends AbstractRanking
 {
-
-
     protected $query;
 
     protected $score;
@@ -50,18 +44,17 @@ class VectorSpaceModel extends AbstractRanking
     /**
      * Returns result ordered by rank.
      *
-     * @param  DocumentInterface $q
+     * @param DocumentInterface $q
      * @return array
      */
     public function search(DocumentInterface $q)
     {
-
         $this->tfidf = new TfIdfFeatureFactory(
             $this->stats,
             array(
                 function ($c, $d) {
                     return $d->getDocumentData();
-                }
+                },
             )
         );
 
@@ -69,28 +62,24 @@ class VectorSpaceModel extends AbstractRanking
 
         $this->score = array();
 
-        for($i = 0; $i < count($this->tset); $i++){
+        for ($i = 0; $i < count($this->tset); $i++) {
             $query = $this->tfidf->getFeatureArray('', $this->query);
             $documents = $this->tfidf->getFeatureArray('', $this->tset->offsetGet($i));
             $this->score[$i] = $this->score($query, $documents);
         }
 
         arsort($this->score);
-        return $this->score;
 
+        return $this->score;
     }
 
     private function score($query, $documents)
     {
-
         $normA = $this->math->norm($query);
         $normB = $this->math->norm($documents);
+
         return (($normA * $normB) != 0)
-               ? $this->math->dotProduct($query, $documents) / ($normA * $normB)
-               : 0;
-
+            ? $this->math->dotProduct($query, $documents) / ($normA * $normB)
+            : 0;
     }
-
-
-
 }

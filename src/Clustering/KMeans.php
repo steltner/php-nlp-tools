@@ -26,12 +26,12 @@ class KMeans extends Clusterer
     /**
      * Initialize the K Means clusterer
      *
-     * @param int                      $n      The number of clusters to compute
-     * @param DistanceInterface        $d      The distance metric to be used (Euclidean, Hamming, ...)
-     * @param CentroidFactoryInterface $cf     This parameter will be used to create the new centroids from a set of documents
-     * @param float                    $cutoff When the maximum change of the centroids is smaller than that stop iterating
+     * @param int $n The number of clusters to compute
+     * @param DistanceInterface $d The distance metric to be used (Euclidean, Hamming, ...)
+     * @param CentroidFactoryInterface $cf This parameter will be used to create the new centroids from a set of documents
+     * @param float $cutoff When the maximum change of the centroids is smaller than that stop iterating
      */
-    public function __construct($n, DistanceInterface $d, CentroidFactoryInterface $cf, $cutoff=1e-5)
+    public function __construct($n, DistanceInterface $d, CentroidFactoryInterface $cf, $cutoff = 1e-5)
     {
         $this->dist = $d;
         $this->n = $n;
@@ -46,27 +46,27 @@ class KMeans extends Clusterer
     public function cluster(TrainingSet $documents, FeatureFactoryInterface $ff)
     {
         // transform the documents according to the FeatureFactory
-        $docs = $this->getDocumentArray($documents,$ff);
+        $docs = $this->getDocumentArray($documents, $ff);
 
         // choose N centroids at random
         $centroids = array();
-        foreach (array_rand($docs,$this->n) as $key) {
+        foreach (array_rand($docs, $this->n) as $key) {
             $centroids[] = $docs[$key];
         }
 
         // cache the distance and centroid factory functions for use
         // with closures
-        $dist = array($this->dist,'dist');
-        $cf = array($this->centroidF,'getCentroid');
+        $dist = array($this->dist, 'dist');
+        $cf = array($this->centroidF, 'getCentroid');
 
         // looooooooop
         while (true) {
             // compute the distance each document has from our centroids
             // the array is MxN where M = count($docs) and N = count($centroids)
             $distances = array_map(
-                function ($doc) use (&$centroids,$dist) {
+                function ($doc) use (&$centroids, $dist) {
                     return array_map(
-                        function ($c) use ($dist,$doc) {
+                        function ($c) use ($dist, $doc) {
                             // it is passed with an array because dist expects references
                             // and it failed when run with phpunit.
                             // see http://php.net/manual/en/function.call-user-func.php
@@ -75,7 +75,7 @@ class KMeans extends Clusterer
                                 $dist,
                                 array(
                                     &$c,
-                                    &$doc
+                                    &$doc,
                                 )
                             );
                         },
@@ -90,20 +90,20 @@ class KMeans extends Clusterer
                 array_keys($centroids),
                 array()
             );
-            foreach ($distances as $idx=>$d) {
+            foreach ($distances as $idx => $d) {
                 // assign document idx to the closest centroid
-                $clusters[array_search(min($d),$d)][] = $idx;
+                $clusters[array_search(min($d), $d)][] = $idx;
             }
 
             // compute the new centroids from the assigned documents
             // using the centroid factory function
             $new_centroids = array_map(
-                function ($cluster) use (&$docs,$cf) {
+                function ($cluster) use (&$docs, $cf) {
                     return call_user_func_array(
                         $cf,
                         array(
                             &$docs,
-                            $cluster
+                            $cluster,
                         )
                     );
                 },
@@ -118,9 +118,9 @@ class KMeans extends Clusterer
             );
 
             // if the largest change is small enough we are done
-            if (max($changes)<$this->cutoff) {
+            if (max($changes) < $this->cutoff) {
                 // return the clusters, the centroids and the distances
-                return array($clusters,$centroids,$distances);
+                return array($clusters, $centroids, $distances);
             }
 
             // update the centroids and loooooop again

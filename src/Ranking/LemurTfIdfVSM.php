@@ -3,12 +3,12 @@
 namespace NlpTools\Ranking;
 
 use NlpTools\Documents\TrainingSet;
-use NlpTools\Ranking\VectorScoringInterface;
 use NlpTools\Documents\DocumentInterface;
 use NlpTools\FeatureFactories\LemurTfIdfFeatureFactory;
 use NlpTools\Analysis\Idf;
 use NlpTools\Math\Math;
-
+use function arsort;
+use function count;
 
 /**
  * This class implements the TF_IDF weighting model as it is implemented in Lemur Project.
@@ -16,12 +16,8 @@ use NlpTools\Math\Math;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class LemurTfIdfVSM extends AbstractRanking
 {
-
-
     protected $query;
 
     protected $score;
@@ -42,18 +38,17 @@ class LemurTfIdfVSM extends AbstractRanking
     /**
      * Returns result ordered by rank.
      *
-     * @param  DocumentInterface $q
+     * @param DocumentInterface $q
      * @return array
      */
     public function search(DocumentInterface $q)
     {
-
         $this->tfidf = new LemurTfIdfFeatureFactory(
             $this->stats,
             array(
                 function ($c, $d) {
                     return $d->getDocumentData();
-                }
+                },
             )
         );
 
@@ -61,28 +56,24 @@ class LemurTfIdfVSM extends AbstractRanking
 
         $this->score = array();
 
-        for($i = 0; $i < count($this->tset); $i++){
+        for ($i = 0; $i < count($this->tset); $i++) {
             $query = $this->tfidf->getFeatureArray('', $this->query);
             $documents = $this->tfidf->getFeatureArray('', $this->tset->offsetGet($i));
             $this->score[$i] = $this->score($query, $documents);
         }
 
         arsort($this->score);
-        return $this->score;
 
+        return $this->score;
     }
 
     private function score($query, $documents)
     {
-
         $normA = $this->math->norm($query);
         $normB = $this->math->norm($documents);
+
         return (($normA * $normB) != 0)
-               ? $this->math->dotProduct($query, $documents) / ($normA * $normB)
-               : 0;
-
+            ? $this->math->dotProduct($query, $documents) / ($normA * $normB)
+            : 0;
     }
-
-
-
 }

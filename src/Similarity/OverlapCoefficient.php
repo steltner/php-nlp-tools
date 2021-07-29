@@ -2,19 +2,24 @@
 
 namespace NlpTools\Similarity;
 
+use function array_fill_keys;
+use function array_intersect_key;
+use function count;
+use function min;
+
 /**
  * https://en.wikipedia.org/wiki/Overlap_coefficient
  */
 class OverlapCoefficient implements SimilarityInterface, DistanceInterface
 {
-   /**
-    * The similarity returned by this algorithm is a number between 0,1
-    */
+    /**
+     * The similarity returned by this algorithm is a number between 0,1
+     */
     public function similarity(&$A, &$B)
     {
         // Make the arrays into sets
-        $a = array_fill_keys($A,1);
-        $b = array_fill_keys($B,1);
+        $a = array_fill_keys($A, 1);
+        $b = array_fill_keys($B, 1);
 
         // Count the cardinalities of the sets
         $a_count = count($a);
@@ -25,13 +30,13 @@ class OverlapCoefficient implements SimilarityInterface, DistanceInterface
         }
 
         // Compute the intersection and count its cardinality
-        $intersect = count(array_intersect_key($a,$b));
+        $intersect = count(array_intersect_key($a, $b));
 
-        return $intersect/min($a_count,$b_count);
+        return $intersect / min($a_count, $b_count);
     }
 
     public function dist(&$A, &$B)
     {
-        return 1-$this->similarity($A,$B);
+        return 1 - $this->similarity($A, $B);
     }
 }

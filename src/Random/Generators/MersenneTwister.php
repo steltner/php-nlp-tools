@@ -9,13 +9,14 @@ class MersenneTwister implements GeneratorInterface
 {
     public function generate()
     {
-        return mt_rand()/mt_getrandmax();
+        return mt_rand() / mt_getrandmax();
     }
 
     protected static $instance;
+
     public static function get()
     {
-        if (self::$instance!=null) return self::$instance;
+        if (self::$instance != null) return self::$instance;
         self::$instance = new MersenneTwister();
 
         return self::$instance;

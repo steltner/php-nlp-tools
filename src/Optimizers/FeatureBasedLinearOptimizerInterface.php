@@ -15,7 +15,7 @@ interface FeatureBasedLinearOptimizerInterface
      * model we would try to maximize the CLogLik that can be calculated
      * from this array.
      *
-     * @param  array &$feature_array
+     * @param array &$feature_array
      * @return array The parameteres $l
      */
     public function optimize(array &$feature_array);

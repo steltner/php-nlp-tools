@@ -2,7 +2,7 @@
 
 namespace NlpTools\FeatureFactories;
 
-use \NlpTools\Documents\DocumentInterface;
+use NlpTools\Documents\DocumentInterface;
 
 /**
  * An implementation of FeatureFactoryInterface that takes any number of callables
@@ -21,11 +21,12 @@ class FunctionFeatures implements FeatureFactoryInterface
     /**
      * @param array $f An array of feature functions
      */
-    public function __construct(array $f=array())
+    public function __construct(array $f = array())
     {
-        $this->functions=$f;
-        $this->frequency=false;
+        $this->functions = $f;
+        $this->frequency = false;
     }
+
     /**
      * Set the feature factory to model frequency instead of presence
      */
@@ -33,6 +34,7 @@ class FunctionFeatures implements FeatureFactoryInterface
     {
         $this->frequency = true;
     }
+
     /**
      * Set the feature factory to model presence instead of frequency
      */
@@ -40,12 +42,13 @@ class FunctionFeatures implements FeatureFactoryInterface
     {
         $this->frequency = false;
     }
+
     /**
      * Add a function as a feature
      *
      * @param callable $feature
      */
-    public function add( $feature )
+    public function add($feature)
     {
         $this->functions[] = $feature;
     }
@@ -58,36 +61,39 @@ class FunctionFeatures implements FeatureFactoryInterface
      * the feature set. If the return value is an array iterate over it
      * and add each value to the feature set.
      *
-     * @param  string            $class The class for which we are calculating features
-     * @param  DocumentInterface $d     The document for which we are calculating features
+     * @param string $class The class for which we are calculating features
+     * @param DocumentInterface $d The document for which we are calculating features
      * @return array
      */
-    public function getFeatureArray($class, DocumentInterface $d)
+    public function getFeatureArray($class, DocumentInterface $d): array
     {
         $features = array_filter(
-            array_map( function ($feature) use ($class,$d) {
-                    return call_user_func($feature, $class, $d);
-                },
+            array_map(function ($feature) use ($class, $d) {
+                return call_user_func($feature, $class, $d);
+            },
                 $this->functions
             ));
         $set = array();
         foreach ($features as $f) {
             if (is_array($f)) {
                 foreach ($f as $ff) {
-                    if (!isset($set[$ff]))
+                    if (!isset($set[$ff])) {
                         $set[$ff] = 0;
+                    }
                     $set[$ff]++;
                 }
             } else {
-                if (!isset($set[$f]))
+                if (!isset($set[$f])) {
                     $set[$f] = 0;
+                }
                 $set[$f]++;
             }
         }
-        if ($this->frequency)
+        if ($this->frequency) {
             return $set;
-        else
+        } else {
             return array_keys($set);
+        }
     }
 
 }

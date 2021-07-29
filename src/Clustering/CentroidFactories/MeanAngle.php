@@ -13,39 +13,41 @@ class MeanAngle extends Euclidean
     {
         $norm = array_reduce(
             $v,
-            function ($v,$w) {
-                return $v+$w*$w;
+            function ($v, $w) {
+                return $v + $w * $w;
             }
         );
         $norm = sqrt($norm);
 
         return array_map(
             function ($vi) use ($norm) {
-                return $vi/$norm;
+                return $vi / $norm;
             },
             $v
         );
     }
 
-    public function getCentroid(array &$docs, array $choose=array())
+    public function getCentroid(array &$docs, array $choose = array())
     {
-        if (empty($choose))
-            $choose = range(0,count($docs)-1);
+        if (empty($choose)) {
+            $choose = range(0, count($docs) - 1);
+        }
         $cnt = count($choose);
         $v = array();
         foreach ($choose as $idx) {
             $d = $this->normalize($this->getVector($docs[$idx]));
-            foreach ($d as $i=>$vi) {
-                if (!isset($v[$i]))
+            foreach ($d as $i => $vi) {
+                if (!isset($v[$i])) {
                     $v[$i] = $vi;
-                else
+                } else {
                     $v[$i] += $vi;
+                }
             }
         }
 
         return array_map(
             function ($vi) use ($cnt) {
-                return $vi/$cnt;
+                return $vi / $cnt;
             },
             $v
         );

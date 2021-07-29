@@ -7,15 +7,14 @@ namespace NlpTools\Stemmers;
  */
 class RegexStemmer extends Stemmer
 {
-
     protected $regex;
     protected $min;
 
     /**
-     * @param string  $regexstr The regex that will be passed to preg_replace
-     * @param integer $min      Do nothing for tokens smaller than $min length
+     * @param string $regexstr The regex that will be passed to preg_replace
+     * @param integer $min Do nothing for tokens smaller than $min length
      */
-    public function __construct($regexstr,$min=0)
+    public function __construct($regexstr, $min = 0)
     {
         $this->regex = $regexstr;
         $this->min = $min;
@@ -23,9 +22,10 @@ class RegexStemmer extends Stemmer
 
     public function stem($word)
     {
-        if (mb_strlen($word,'utf-8')>=$this->min)
-            return preg_replace($this->regex,'',$word);
+        if (mb_strlen($word, 'utf-8') >= $this->min) {
+            return preg_replace($this->regex, '', $word);
+        }
+
         return $word;
     }
-
 }

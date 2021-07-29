@@ -6,9 +6,7 @@ use NlpTools\Math\Math;
 
 abstract class Normalization
 {
-
     protected $math;
-
 
     public function __construct()
     {
@@ -16,5 +14,4 @@ abstract class Normalization
     }
 
     abstract protected function normalise($tf, $docLength, $termFrequency, $collectionLength);
-
 }

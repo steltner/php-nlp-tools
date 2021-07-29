@@ -10,10 +10,10 @@ namespace NlpTools\Utils\Normalizers;
 class Greek extends Normalizer
 {
     protected static $dirty = array(
-        'ά','έ','ό','ή','ί','ύ','ώ','ς'
+        'ά', 'έ', 'ό', 'ή', 'ί', 'ύ', 'ώ', 'ς',
     );
     protected static $clean = array(
-        'α','ε','ο','η','ι','υ','ω','σ'
+        'α', 'ε', 'ο', 'η', 'ι', 'υ', 'ω', 'σ',
     );
 
     public function normalize($w)

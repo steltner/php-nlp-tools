@@ -18,20 +18,20 @@ class GroupAverage extends HeapLinkage
 
     public function initializeStrategy(DistanceInterface $d, array &$docs)
     {
-        parent::initializeStrategy($d,$docs);
+        parent::initializeStrategy($d, $docs);
 
         $this->cluster_size = array_fill_keys(
-            range(0,$this->L-1),
+            range(0, $this->L - 1),
             1
         );
     }
 
-    protected function newDistance($xi,$yi,$x,$y)
+    protected function newDistance($xi, $yi, $x, $y)
     {
         $size_x = $this->cluster_size[$x];
         $size_y = $this->cluster_size[$y];
 
-        return ($this->dm[$xi]*$size_x + $this->dm[$yi]*$size_y)/($size_x + $size_y);
+        return ($this->dm[$xi] * $size_x + $this->dm[$yi] * $size_y) / ($size_x + $size_y);
     }
 
     public function getNextMerge()

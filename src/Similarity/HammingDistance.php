@@ -12,20 +12,20 @@ class HammingDistance implements DistanceInterface
     /**
      * Count the number of positions that A and B differ.
      *
-     * @param  string $A
-     * @param  string $B
+     * @param string $A
+     * @param string $B
      * @return int    The hamming distance of the two strings A and B
      */
     public function dist(&$A, &$B)
     {
         $l1 = strlen($A);
         $l2 = strlen($B);
-        $l = min($l1,$l2);
+        $l = min($l1, $l2);
         $d = 0;
-        for ($i=0;$i<$l;$i++) {
-            $d += (int) ($A[$i]!=$B[$i]);
+        for ($i = 0; $i < $l; $i++) {
+            $d += (int)($A[$i] != $B[$i]);
         }
 
-        return $d + (int) abs($l1-$l2);
+        return $d + (int)abs($l1 - $l2);
     }
 }

@@ -2,9 +2,6 @@
 
 namespace NlpTools\Ranking\BasicModel;
 
-use NlpTools\Ranking\BasicModel\BasicModelInterface;
-
-
 /**
  * This class implements the BE basic model for randomness. BE stands for Bose-Einstein statistics
  *
@@ -14,26 +11,22 @@ use NlpTools\Ranking\BasicModel\BasicModelInterface;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class InExp extends BasicModel implements BasicModelInterface
 {
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
-
     }
 
     /**
      * Inf1(tf ) = tf · log2(N + 1 / n_exp + 0.5)
-     */ 
-    public function score($tfn, $docLength, $documentFrequency, $termFrequency, $collectionLength, $collectionCount){
-
+     */
+    public function score($tfn, $docLength, $documentFrequency, $termFrequency, $collectionLength, $collectionCount)
+    {
         $f = $termFrequency / $collectionCount;
         $n_exp = $collectionCount * (1 - exp(-$f));
         $idf = $this->idfDFR($collectionCount, $n_exp);
-		return $tfn * $idf;
 
-	}
-
+        return $tfn * $idf;
+    }
 }

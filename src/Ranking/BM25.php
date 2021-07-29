@@ -2,12 +2,12 @@
 
 namespace NlpTools\Ranking;
 
-use NlpTools\Ranking\ScoringInterface;
+use function log;
 
 /**
  * BM25 is a class for ranking documents against a query.
  *
- * The implementation is based on the paper by Stephen E. Robertson, Steve Walker, Susan Jones, 
+ * The implementation is based on the paper by Stephen E. Robertson, Steve Walker, Susan Jones,
  * Micheline Hancock-Beaulieu & Mike Gatford (November 1994).
  * that can be found at http://trec.nist.gov/pubs/trec3/t3_proceedings.html.
  *
@@ -22,11 +22,8 @@ use NlpTools\Ranking\ScoringInterface;
  *
  * @author Jericko Tejido <jtbibliomania@gmail.com>
  */
-
-
 class BM25 implements ScoringInterface
 {
-
     const B = 0.75;
 
     const K1 = 1.2;
@@ -54,23 +51,21 @@ class BM25 implements ScoringInterface
     /**
      * To avoid negative results when the underlying term tj occurs in more than half of
      * the documents (documentFrequency > numberofDocuments/2) we add 1 before getting log().
-     * @param  string $term
+     * @param string $term
      * @return float
      */
     public function score($tf, $docLength, $documentFrequency, $keyFrequency, $termFrequency, $collectionLength, $collectionCount, $uniqueTermsCount)
     {
         $score = 0;
 
-        if($tf != 0){
-            $idf = log(1 + (($collectionCount-$documentFrequency+0.5)/($documentFrequency + 0.5)));
-            $avg_dl = $docLength/$collectionLength;
+        if ($tf != 0) {
+            $idf = log(1 + (($collectionCount - $documentFrequency + 0.5) / ($documentFrequency + 0.5)));
+            $avg_dl = $docLength / $collectionLength;
             $num = $tf * ($this->k1 + 1);
             $denom = $tf + $this->k1 * (1 - $this->b + $this->b * ($docLength / $avg_dl));
-            $score += (($this->k3 + 1) * $keyFrequency/($this->k3 + $keyFrequency)) * $idf * (($num / $denom) + $this->d);
+            $score += (($this->k3 + 1) * $keyFrequency / ($this->k3 + $keyFrequency)) * $idf * (($num / $denom) + $this->d);
         }
 
         return $score;
-
     }
-
 }
