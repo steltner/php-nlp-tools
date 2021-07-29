@@ -1,4 +1,5 @@
 <?php
+
 namespace NlpTools\FeatureFactories;
  
 class TfFeatureFactory extends FunctionFeatures

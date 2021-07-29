@@ -1,4 +1,5 @@
 <?php
+
 namespace NlpTools\Stemmers;
 use NlpTools\Utils\VowelsAbstractFactory;
 /**

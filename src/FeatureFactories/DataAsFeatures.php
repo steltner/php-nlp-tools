@@ -1,4 +1,5 @@
 <?php
+
 namespace NlpTools\FeatureFactories;
 
 use NlpTools\Documents\DocumentInterface;

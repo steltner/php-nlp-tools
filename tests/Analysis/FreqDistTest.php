@@ -1,4 +1,5 @@
 <?php
+
 namespace NlpTools\Analysis;
 use NlpTools\Documents\TokensDocument;
 
