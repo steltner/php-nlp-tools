@@ -23,11 +23,11 @@
  */
 
 // include the autoloader
-include '../autoloader.php';
+include '../vendor/autoload.php';
 
 use NlpTools\Tokenizers\WhitespaceTokenizer;
 use NlpTools\FeatureFactories\FunctionFeatures;
-use NlpTools\Documents\Document;
+use NlpTools\Documents\DocumentInterface;
 use NlpTools\Documents\TokensDocument;
 use NlpTools\Documents\TrainingSet;
 use NlpTools\Optimizers\ExternalMaxentOptimizer;
@@ -39,8 +39,9 @@ $tok = new WhitespaceTokenizer();
 $ff = new FunctionFeatures();
 $ff->add(function ($class, DocumentInterface $d) {
     $r = array();
-    foreach ($d->getDocumentData() as $tok)
-        $r[] = $class.$tok;
+    foreach ($d->getDocumentData() as $tok) {
+        $r[] = $class . $tok;
+    }
 
     return $r;
 });
@@ -61,42 +62,44 @@ $test = new SplFileObject($argv[2]);
 
 // fill in the training set
 foreach ($train as $f) {
-    $f = substr($f,0,-1);
-    if (strlen($f)==0)
+    $f = substr($f, 0, -1);
+    if (strlen($f) == 0) {
         continue;
+    }
     $class = "neg";
-    if (strpos($f,"pos")!==false) {
+    if (strpos($f, "pos") !== false) {
         $class = "pos";
     }
     $tset->addDocument(
-            $class,
-            new TokensDocument($tok->tokenize(file_get_contents($f)))
-        );
+        $class,
+        new TokensDocument($tok->tokenize(file_get_contents($f)))
+    );
 }
 
 // train the model
-$model->train($ff,$tset,$optimizer);
+$model->train($ff, $tset, $optimizer);
 
 // to use the model we need a classifier
-$cls = new FeatureBasedLinearClassifier($ff,$model);
+$cls = new FeatureBasedLinearClassifier($ff, $model);
 
 // evaluate the model
 $correct = 0;
 $total = 0;
 foreach ($test as $f) {
-    $f = substr($f,0,-1);
-    if (strlen($f)==0)
+    $f = substr($f, 0, -1);
+    if (strlen($f) == 0) {
         continue;
+    }
     $class = "neg";
-    if (strpos($f,"pos")!==false) {
+    if (strpos($f, "pos") !== false) {
         $class = "pos";
     }
     $doc = new TokensDocument($tok->tokenize(file_get_contents($f)));
-    $predicted = $cls->classify(array("pos","neg"),$doc);
+    $predicted = $cls->classify(array("pos", "neg"), $doc);
     if ($predicted == $class) {
         $correct++;
     }
     $total++;
 }
 
-printf("Acc: %.2f%%\n",(100*$correct/$total));
+printf("Acc: %.2f%%\n", (100 * $correct / $total));

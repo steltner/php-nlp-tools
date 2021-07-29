@@ -2,16 +2,18 @@
 
 namespace NlpTools\Documents;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * TODO: Add checks for the edges of the token list
  */
-class WordDocumentTest extends \PHPUnit_Framework_TestCase
+class WordDocumentTest extends TestCase
 {
     protected $tokens;
 
-    public function __construct()
+    protected function setUp(): void
     {
-        $this->tokens = array("The","quick","brown","fox","jumped","over","the","lazy","dog");
+        $this->tokens = array("The", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dog");
     }
 
     /**
@@ -19,10 +21,10 @@ class WordDocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function testTokenSelection()
     {
-        foreach ($this->tokens as $i=>$t) {
+        foreach ($this->tokens as $i => $t) {
             // no context
             $doc = new WordDocument($this->tokens, $i, 0);
-            list($w,$prev,$next) = $doc->getDocumentData();
+            list($w, $prev, $next) = $doc->getDocumentData();
 
             $this->assertEquals(
                 $t,
@@ -49,9 +51,9 @@ class WordDocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrevContext()
     {
-        for ($i=0;$i<5;$i++) {
+        for ($i = 0; $i < 5; $i++) {
             $doc = new WordDocument($this->tokens, 4, $i);
-            list($_,$prev,$_) = $doc->getDocumentData();
+            list($_, $prev, $_) = $doc->getDocumentData();
 
             $this->assertCount(
                 $i,
@@ -59,9 +61,9 @@ class WordDocumentTest extends \PHPUnit_Framework_TestCase
                 "With $i words context prev should be $i words long"
             );
             for (
-                $j=3,$y=$i-1;
-                $j>=4-$i;
-                $y--,$j--) {
+                $j = 3, $y = $i - 1;
+                $j >= 4 - $i;
+                $y--, $j--) {
                 $this->assertEquals(
                     $this->tokens[$j],
                     $prev[$y]
@@ -77,19 +79,19 @@ class WordDocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function testNextContext()
     {
-        for ($i=0;$i<5;$i++) {
+        for ($i = 0; $i < 5; $i++) {
             $doc = new WordDocument($this->tokens, 4, $i);
-            list($_,$_,$next) = $doc->getDocumentData();
+            list($_, $_, $next) = $doc->getDocumentData();
 
             $this->assertCount(
                 $i,
                 $next,
                 "With $i words context next should be $i words long"
             );
-            for ($j=5; $j<5+$i; $j++) {
+            for ($j = 5; $j < 5 + $i; $j++) {
                 $this->assertEquals(
                     $this->tokens[$j],
-                    $next[$j-5]
+                    $next[$j - 5]
                 );
             }
         }

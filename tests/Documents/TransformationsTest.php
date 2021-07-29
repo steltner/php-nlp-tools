@@ -3,13 +3,15 @@
 namespace NlpTools\Documents;
 
 use NlpTools\Utils\IdentityTransformer;
+use PHPUnit\Framework\TestCase;
+use function count;
 
-class TransformationsTest extends \PHPUnit_Framework_TestCase
+class TransformationsTest extends TestCase
 {
     public function provideTokens()
     {
         return array(
-            array(array("1","2","3","4","5","6","7"))
+            array(array("1", "2", "3", "4", "5", "6", "7")),
         );
     }
 
@@ -44,7 +46,7 @@ class TransformationsTest extends \PHPUnit_Framework_TestCase
     public function testWordDocument($tokens)
     {
         $transformer = new IdentityTransformer();
-        $doc = new WordDocument($tokens,count($tokens)/2, 2);
+        $doc = new WordDocument($tokens, count($tokens) / 2, 2);
         $correct = $doc->getDocumentData();
         $doc->applyTransformation($transformer);
         $this->assertEquals(
@@ -52,7 +54,7 @@ class TransformationsTest extends \PHPUnit_Framework_TestCase
             $doc->getDocumentData()
         );
 
-        $tdoc = new TrainingDocument("", new WordDocument($tokens,count($tokens)/2, 2));
+        $tdoc = new TrainingDocument("", new WordDocument($tokens, count($tokens) / 2, 2));
         $tdoc->applyTransformation($transformer);
         $this->assertEquals(
             $correct,

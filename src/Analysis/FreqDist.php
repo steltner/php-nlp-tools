@@ -2,15 +2,12 @@
 
 namespace NlpTools\Analysis;
 
-use NlpTools\Documents\TokensDocument;
-
 /**
  * Extract the Frequency distribution of keywords
  * @author Dan Cardin
  */
 class FreqDist
 {
-
     /**
      * An associative array that holds all the frequencies per token
      * @var array
@@ -107,7 +104,7 @@ class FreqDist
     public function getTotalByToken($string)
     {
         $array = $this->keyValues;
-        if(array_key_exists($string, $array)) {
+        if (array_key_exists($string, $array)) {
             return $array[$string];
         } else {
             return false;
@@ -121,18 +118,17 @@ class FreqDist
      */
     public function getTokenWeight($string)
     {
-        if($this->getTotalByToken($string)){
-            return $this->getTotalByToken($string)/$this->getTotalTokens();
+        if ($this->getTotalByToken($string)) {
+            return $this->getTotalByToken($string) / $this->getTotalTokens();
         } else {
             return false;
         }
     }
 
     /**
-     *
      * Returns an array of tokens that occurred once
-     * @todo This is an inefficient approach
      * @return array
+     * @todo This is an inefficient approach
      */
     public function getHapaxes()
     {
@@ -142,7 +138,7 @@ class FreqDist
                 $samples[] = $sample;
             }
         }
+
         return $samples;
     }
-
 }

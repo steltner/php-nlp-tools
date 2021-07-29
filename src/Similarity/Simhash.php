@@ -95,14 +95,14 @@ class Simhash implements SimilarityInterface, DistanceInterface
     /**
      * Computes the hamming distance of the simhashes of two sets.
      *
-     * @param array $A
-     * @param array $B
-     * @return int   [0,$this->length]
+     * @param array $a
+     * @param array $b
+     * @return int [0,$this->length]
      */
-    public function dist(&$A, &$B)
+    public function dist($a, $b)
     {
-        $h1 = $this->simhash($A);
-        $h2 = $this->simhash($B);
+        $h1 = $this->simhash($a);
+        $h2 = $this->simhash($b);
         $d = 0;
         for ($i = 0; $i < $this->length; $i++) {
             if ($h1[$i] != $h2[$i]) {

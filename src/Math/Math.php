@@ -70,6 +70,7 @@ class Math
         $dotProduct = 0;
         $keysA = array_keys(array_filter($a));
         $keysB = array_keys(array_filter($b));
+
         $uniqueKeys = array_unique(array_merge($keysA, $keysB));
         foreach ($uniqueKeys as $key) {
             if (!empty($a[$key]) && !empty($b[$key])) {

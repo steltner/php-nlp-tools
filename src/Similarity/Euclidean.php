@@ -10,21 +10,21 @@ class Euclidean implements DistanceInterface
 {
     /**
      * see class description
-     * @param array $A Either a vector or a collection of tokens to be transformed to a vector
-     * @param array $B Either a vector or a collection of tokens to be transformed to a vector
+     * @param array $a Either a vector or a collection of tokens to be transformed to a vector
+     * @param array $b Either a vector or a collection of tokens to be transformed to a vector
      * @return float The euclidean distance between $A and $B
      */
-    public function dist(&$A, &$B)
+    public function dist($a, $b)
     {
-        if (is_int(key($A))) {
-            $v1 = array_count_values($A);
+        if (is_int(key($a))) {
+            $v1 = array_count_values($a);
         } else {
-            $v1 = &$A;
+            $v1 = &$a;
         }
-        if (is_int(key($B))) {
-            $v2 = array_count_values($B);
+        if (is_int(key($b))) {
+            $v2 = array_count_values($b);
         } else {
-            $v2 = &$B;
+            $v2 = &$b;
         }
 
         $r = array();

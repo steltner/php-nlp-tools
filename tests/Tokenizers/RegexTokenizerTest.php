@@ -2,7 +2,10 @@
 
 namespace NlpTools\Tokenizers;
 
-class RegexTokenizerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+use function implode;
+
+class RegexTokenizerTest extends TestCase
 {
     /**
      * Test simple splitting patterns
@@ -11,25 +14,25 @@ class RegexTokenizerTest extends \PHPUnit_Framework_TestCase
     {
         // check split1
         $tok = new RegexTokenizer(array(
-            "/\s+/"
+            "/\s+/",
         ));
 
         $tokens = $tok->tokenize("0 1 2 3 4 5 6 7 8 9");
         $this->assertCount(10, $tokens);
-        $this->assertEquals("0123456789",implode("",$tokens));
+        $this->assertEquals("0123456789", implode("", $tokens));
 
         // check split2
         $tok = new RegexTokenizer(array(
-            "/\n+/"
+            "/\n+/",
         ));
 
         $tokens = $tok->tokenize("0 1 2 3 4\n5 6 7 8 9");
         $this->assertCount(2, $tokens);
-        $this->assertEquals("0 1 2 3 45 6 7 8 9",implode("",$tokens));
+        $this->assertEquals("0 1 2 3 45 6 7 8 9", implode("", $tokens));
 
         $tokens = $tok->tokenize("0 1 2 3 4\n\n5 6 7 8 9");
         $this->assertCount(2, $tokens);
-        $this->assertEquals("0 1 2 3 45 6 7 8 9",implode("",$tokens));
+        $this->assertEquals("0 1 2 3 45 6 7 8 9", implode("", $tokens));
 
     }
 
@@ -40,12 +43,12 @@ class RegexTokenizerTest extends \PHPUnit_Framework_TestCase
     {
         // check keep matches
         $tok = new RegexTokenizer(array(
-            array("/(\s+)?(\w+)(\s+)?/",2)
+            array("/(\s+)?(\w+)(\s+)?/", 2),
         ));
 
         $tokens = $tok->tokenize("0 1 2 3 4 5 6 7 8 9");
         $this->assertCount(10, $tokens);
-        $this->assertEquals("0123456789",implode("",$tokens));
+        $this->assertEquals("0123456789", implode("", $tokens));
     }
 
     /**
@@ -56,13 +59,13 @@ class RegexTokenizerTest extends \PHPUnit_Framework_TestCase
     {
         // check keep matches
         $tok = new RegexTokenizer(array(
-            array("/\d/",'$0 '),
-            WhitespaceTokenizer::PATTERN
+            array("/\d/", '$0 '),
+            WhitespaceTokenizer::PATTERN,
         ));
 
         $tokens = $tok->tokenize("0123456789");
         $this->assertCount(10, $tokens);
-        $this->assertEquals("0123456789",implode("",$tokens));
+        $this->assertEquals("0123456789", implode("", $tokens));
     }
 
     /**
@@ -72,9 +75,9 @@ class RegexTokenizerTest extends \PHPUnit_Framework_TestCase
     public function testSplitWithManyPatterns()
     {
         $tok = new RegexTokenizer(array(
-            WhitespaceTokenizer::PATTERN, 	// split on whitespace
-            array("/([^\.])\.$/",'$1 .'),	// replace <word>. with <word><space>.
-            "/ /"							// split on <space>
+            WhitespaceTokenizer::PATTERN,    // split on whitespace
+            array("/([^\.])\.$/", '$1 .'),    // replace <word>. with <word><space>.
+            "/ /"                            // split on <space>
         ));
 
         // example text stolen from NLTK :-)

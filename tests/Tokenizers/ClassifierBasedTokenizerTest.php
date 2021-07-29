@@ -3,8 +3,9 @@
 namespace NlpTools\Tokenizers;
 
 use NlpTools\Classifiers\EndOfSentenceRules;
+use PHPUnit\Framework\TestCase;
 
-class ClassifierBasedTokenizerTest extends \PHPUnit_Framework_TestCase
+class ClassifierBasedTokenizerTest extends TestCase
 {
     public function testTokenizer()
     {
@@ -19,7 +20,7 @@ class ClassifierBasedTokenizerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 "We are what we repeatedly do.",
-                "Excellence, then, is not an act, but a habit."
+                "Excellence, then, is not an act, but a habit.",
             ),
             $tok->tokenize($text)
         );

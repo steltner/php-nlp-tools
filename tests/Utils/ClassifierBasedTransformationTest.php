@@ -4,8 +4,9 @@ namespace NlpTools\Utils;
 
 use NlpTools\Classifiers\ClassifierInterface;
 use NlpTools\Documents\DocumentInterface;
+use PHPUnit\Framework\TestCase;
 
-class ClassifierBasedTransformationTest extends \PHPUnit_Framework_TestCase implements ClassifierInterface
+class ClassifierBasedTransformationTest extends TestCase implements ClassifierInterface
 {
     public function classify(array $classes, DocumentInterface $d)
     {
@@ -14,11 +15,11 @@ class ClassifierBasedTransformationTest extends \PHPUnit_Framework_TestCase impl
 
     public function testEvenAndOdd()
     {
-        $stubEven = $this->getMock("NlpTools\\Utils\\TransformationInterface");
+        $stubEven = $this->createMock(TransformationInterface::class);
         $stubEven->expects($this->any())
             ->method('transform')
             ->will($this->returnValue('even'));
-        $stubOdd = $this->getMock("NlpTools\\Utils\\TransformationInterface");
+        $stubOdd = $this->createMock(TransformationInterface::class);
         $stubOdd->expects($this->any())
             ->method('transform')
             ->will($this->returnValue('odd'));

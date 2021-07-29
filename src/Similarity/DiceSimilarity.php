@@ -22,8 +22,8 @@ class DiceSimilarity implements SimilarityInterface, DistanceInterface
         return (2 * $intersect) / ($a_count + $b_count);
     }
 
-    public function dist(&$A, &$B)
+    public function dist($a, $b)
     {
-        return 1 - $this->similarity($A, $B);
+        return 1 - $this->similarity($a, $b);
     }
 }

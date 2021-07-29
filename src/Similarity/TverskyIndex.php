@@ -49,8 +49,8 @@ class TverskyIndex implements SimilarityInterface, DistanceInterface
         return $intersect / ($intersect + ($beta * ($alpha * $min + $max * (1 - $alpha))));
     }
 
-    public function dist(&$A, &$B)
+    public function dist($a, $b)
     {
-        return 1 - $this->similarity($A, $B);
+        return 1 - $this->similarity($a, $b);
     }
 }

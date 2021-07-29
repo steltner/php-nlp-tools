@@ -2,6 +2,8 @@
 
 namespace NlpTools\Stemmers;
 
+use SplFileObject;
+
 /**
  * Check the correctness of the porter stemmer implementation
  *
@@ -18,10 +20,10 @@ class PorterStemmerTest extends StemmerTestBase
      */
     public function testStemmer()
     {
-        $words = new \SplFileObject(TEST_DATA_DIR.'/Stemmers/PorterStemmerTest/words.txt');
-        $stems = new \SplFileObject(TEST_DATA_DIR.'/Stemmers/PorterStemmerTest/stems.txt');
-        $words->setFlags(\SplFileObject::DROP_NEW_LINE | \SplFileObject::SKIP_EMPTY);
-        $stems->setFlags(\SplFileObject::DROP_NEW_LINE | \SplFileObject::SKIP_EMPTY);
+        $words = new SplFileObject(TEST_DATA_DIR . '/Stemmers/PorterStemmerTest/words.txt');
+        $stems = new SplFileObject(TEST_DATA_DIR . '/Stemmers/PorterStemmerTest/stems.txt');
+        $words->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::SKIP_EMPTY);
+        $stems->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::SKIP_EMPTY);
         $stems->rewind();
 
         $stemmer = new PorterStemmer();

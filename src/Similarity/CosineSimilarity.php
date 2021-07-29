@@ -95,8 +95,8 @@ class CosineSimilarity implements SimilarityInterface, DistanceInterface
     /**
      * Cosine distance is simply 1-cosine similarity
      */
-    public function dist(&$A, &$B)
+    public function dist($a, $b)
     {
-        return 1 - $this->similarity($A, $B);
+        return 1 - $this->similarity($a, $b);
     }
 }

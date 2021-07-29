@@ -2,6 +2,10 @@
 
 namespace NlpTools\Tokenizers;
 
+use function array_merge;
+use function preg_split;
+use const PREG_SPLIT_NO_EMPTY;
+
 /**
  * Regex tokenizer tokenizes text based on a set of regexes
  */
@@ -81,6 +85,7 @@ class RegexTokenizer implements TokenizerInterface
         $tokens = array();
         foreach ($str as $s) {
             preg_match_all($pattern, $s, $m);
+
             $tokens = array_merge(
                 $tokens,
                 $m[$keep]

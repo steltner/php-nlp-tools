@@ -2,13 +2,15 @@
 
 namespace NlpTools\Tokenizers;
 
+use PHPUnit\Framework\TestCase;
+use SplFileObject;
+use function implode;
+
 /**
- *
  * @author Dan Cardin
  */
-class PennTreeBankTokenizerTest extends \PHPUnit_Framework_TestCase
+class PennTreeBankTokenizerTest extends TestCase
 {
-    
     public function testTokenizer()
     {
         $tokenizer = new PennTreeBankTokenizer();
@@ -21,34 +23,32 @@ class PennTreeBankTokenizerTest extends \PHPUnit_Framework_TestCase
         $tokenizer = new PennTreeBankTokenizer();
         $this->assertCount(7, $tokenizer->tokenize("They'll save and invest more."));
     }
-    
+
     public function testTokenizer3()
     {
         $tokenizer = new PennTreeBankTokenizer();
         $this->assertCount(4, $tokenizer->tokenize("I'm some text"));
     }
-    
+
     public function testAgainstOriginalSedImplementation()
     {
         $tokenizer = new PennTreeBankTokenizer();
-        $tokenized = new \SplFileObject(TEST_DATA_DIR."/Tokenizers/PennTreeBankTokenizerTest/tokenized");
-        $tokenized->setFlags(\SplFileObject::DROP_NEW_LINE);
-        $sentences = new \SplFileObject(TEST_DATA_DIR."/Tokenizers/PennTreeBankTokenizerTest/test.txt");
-        $sentences->setFlags(\SplFileObject::DROP_NEW_LINE);
- 
+        $tokenized = new SplFileObject(TEST_DATA_DIR . "/Tokenizers/PennTreeBankTokenizerTest/tokenized");
+        $tokenized->setFlags(SplFileObject::DROP_NEW_LINE);
+        $sentences = new SplFileObject(TEST_DATA_DIR . "/Tokenizers/PennTreeBankTokenizerTest/test.txt");
+        $sentences->setFlags(SplFileObject::DROP_NEW_LINE);
+
         $tokenized->rewind();
         foreach ($sentences as $sentence) {
             if ($sentence) // skip empty lines
             {
                 $this->assertEquals(
                     $tokenized->current(),
-                    implode(" ",$tokenizer->tokenize($sentence)),
+                    implode(" ", $tokenizer->tokenize($sentence)),
                     "Sentence: '$sentence' was not tokenized correctly"
                 );
             }
             $tokenized->next();
         }
-                
     }
-
 }

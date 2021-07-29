@@ -27,6 +27,6 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit -c tests/"
     }
 }

@@ -2,6 +2,8 @@
 
 namespace NlpTools\Stemmers;
 
+use SplFileObject;
+
 class GreekStemmerTest extends StemmerTestBase
 {
     /**
@@ -13,10 +15,10 @@ class GreekStemmerTest extends StemmerTestBase
      */
     public function testFromAppendixA()
     {
-        $words = new \SplFileObject(TEST_DATA_DIR.'/Stemmers/GreekStemmerTest/appendix-a-words');
-        $stems = new \SplFileObject(TEST_DATA_DIR.'/Stemmers/GreekStemmerTest/appendix-a-stems');
-        $words->setFlags(\SplFileObject::DROP_NEW_LINE | \SplFileObject::SKIP_EMPTY);
-        $stems->setFlags(\SplFileObject::DROP_NEW_LINE | \SplFileObject::SKIP_EMPTY);
+        $words = new SplFileObject(TEST_DATA_DIR . '/Stemmers/GreekStemmerTest/appendix-a-words');
+        $stems = new SplFileObject(TEST_DATA_DIR . '/Stemmers/GreekStemmerTest/appendix-a-stems');
+        $words->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::SKIP_EMPTY);
+        $stems->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::SKIP_EMPTY);
         $stems->rewind();
 
         $stemmer = new GreekStemmer();

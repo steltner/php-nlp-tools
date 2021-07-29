@@ -3,6 +3,9 @@
 namespace NlpTools\Documents;
 
 use NlpTools\Utils\TransformationInterface;
+use function array_filter;
+use function array_map;
+use function array_values;
 
 /**
  * A Document that represents a single word but with a context of a

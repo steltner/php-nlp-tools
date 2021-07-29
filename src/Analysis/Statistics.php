@@ -15,7 +15,6 @@ use NlpTools\FeatureFactories\DataAsFeatures;
  * documentFrequency is the number of documents containing the word in the entire collection.
  * hapaxes returns an array of unique terms from a document with a known $key.
  */
-
 abstract class Statistics
 {
     protected $numberofCollectionTokens;
@@ -24,60 +23,56 @@ abstract class Statistics
     protected $documentFrequency;
     protected $tf;
 
-
     /**
      * @param TrainingSet $tset The set of documents for which we will compute token stats
-     * @param FeatureFactoryInterface $ff A feature factory to translate the document data to
+     * @param FeatureFactoryInterface|null $ff A feature factory to translate the document data to
      * single tokens
      */
-    public function __construct(TrainingSet $tset, FeatureFactoryInterface $ff=null)
+    public function __construct(TrainingSet $tset, FeatureFactoryInterface $ff = null)
     {
-
-        if ($ff===null){
+        if ($ff === null) {
             $ff = new DataAsFeatures();
         }
 
         $tset->setAsKey(TrainingSet::OFFSET_AS_KEY);
         $this->numberofCollectionTokens = 0;
         $this->numberofDocuments = 0;
-        foreach ($tset as $class=>$doc) {
+        foreach ($tset as $class => $doc) {
             $this->numberofDocuments++;
-            $tokens = $ff->getFeatureArray($class,$doc);
+            $tokens = $ff->getFeatureArray($class, $doc);
             $flag = array();
             foreach ($tokens as $term) {
-                    $this->numberofCollectionTokens++;
-                    $flag[$term] = isset($flag[$term]) && $flag[$term] === true ? true : false;
+                $this->numberofCollectionTokens++;
+                $flag[$term] = isset($flag[$term]) && $flag[$term] === true ? true : false;
 
-                    if (!isset($this->tf[$class][$term])) {
-                        $this->tf[$class][$term] = 0;
-                    }
-                    $this->tf[$class][$term]++;
+                if (!isset($this->tf[$class][$term])) {
+                    $this->tf[$class][$term] = 0;
+                }
+                $this->tf[$class][$term]++;
 
-                    if (isset($this->termFrequency[$term])){
-                        $this->termFrequency[$term]++;
-                    } else {
-                        $this->termFrequency[$term] = 1;
-                    }
+                if (isset($this->termFrequency[$term])) {
+                    $this->termFrequency[$term]++;
+                } else {
+                    $this->termFrequency[$term] = 1;
+                }
 
-                    if (isset($this->documentFrequency[$term])){
-                        if ($flag[$term] === false){
-                            $flag[$term] = true;
-                            $this->documentFrequency[$term]++;
-                        }
-                    } else {
+                if (isset($this->documentFrequency[$term])) {
+                    if ($flag[$term] === false) {
                         $flag[$term] = true;
-                        $this->documentFrequency[$term] = 1;
+                        $this->documentFrequency[$term]++;
                     }
+                } else {
+                    $flag[$term] = true;
+                    $this->documentFrequency[$term] = 1;
+                }
             }
-
         }
-
     }
 
     /**
      * Returns the idf weight containing the query word in the entire collection.
      *
-     * @param  string $term
+     * @param string $term
      * @return mixed
      */
     abstract public function idf($term);
@@ -89,8 +84,8 @@ abstract class Statistics
      * tokens, this should be used to get tf in relation to the entire corpus collection. Using this in
      * Ranking should reduce reindexing time.
      *
-     * @param  string $term
-     * @param  int $key
+     * @param string $term
+     * @param int $key
      * @return int
      */
     abstract public function tf($key, $term);
@@ -98,7 +93,7 @@ abstract class Statistics
     /**
      * Returns counted tokens in the entire collection.
      *
-     * @param  int $key
+     * @param int $key
      * @return array
      */
     public function index()
@@ -109,7 +104,7 @@ abstract class Statistics
     /**
      * Returns counted tokens of a document with a known $key.
      *
-     * @param  int $key
+     * @param int $key
      * @return array
      */
     public function indexByKey($key)
@@ -128,20 +123,17 @@ abstract class Statistics
      */
     public function numberofDocuments()
     {
-
         return $this->numberofDocuments;
-
     }
 
     /**
      * Returns number of occurences of the word in the entire collection.
      *
-     * @param  string $term
+     * @param string $term
      * @return int
      */
     public function termFrequency($term)
     {
-
         if (isset($this->termFrequency[$term])) {
             return $this->termFrequency[$term];
         } else {
@@ -152,12 +144,11 @@ abstract class Statistics
     /**
      * Returns number of documents containing the word in the entire collection.
      *
-     * @param  string $term
+     * @param string $term
      * @return int
      */
     public function documentFrequency($term)
     {
-
         if (isset($this->documentFrequency[$term])) {
             return $this->documentFrequency[$term];
         } else {
@@ -174,6 +165,4 @@ abstract class Statistics
     {
         return $this->numberofCollectionTokens;
     }
-
-
 }

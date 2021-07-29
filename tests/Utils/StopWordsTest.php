@@ -4,23 +4,25 @@ namespace NlpTools\Utils;
 
 use NlpTools\Documents\TokensDocument;
 use NlpTools\Utils\Normalizers\Normalizer;
+use PHPUnit\Framework\TestCase;
+use function explode;
 
-class StopWordsTest extends \PHPUnit_Framework_TestCase
+class StopWordsTest extends TestCase
 {
     public function testStopwords()
     {
         $stopwords = new StopWords(
             array(
                 "to",
-                "the"
+                "the",
             )
         );
 
-        $doc = new TokensDocument(explode(" ","if you tell the truth you do not have to remember anything"));
+        $doc = new TokensDocument(explode(" ", "if you tell the truth you do not have to remember anything"));
         $doc->applyTransformation($stopwords);
         $this->assertEquals(
             array(
-                "if", "you", "tell", "truth", "you", "do", "not", "have", "remember", "anything"
+                "if", "you", "tell", "truth", "you", "do", "not", "have", "remember", "anything",
             ),
             $doc->getDocumentData()
         );
@@ -31,7 +33,7 @@ class StopWordsTest extends \PHPUnit_Framework_TestCase
         $stopwords = new StopWords(
             array(
                 "to",
-                "the"
+                "the",
             ),
             Normalizer::factory("English")
         );
@@ -40,7 +42,7 @@ class StopWordsTest extends \PHPUnit_Framework_TestCase
         $doc->applyTransformation($stopwords);
         $this->assertEquals(
             array(
-                "If", "you", "Tell", "truth", "You", "do", "not", "have", "remember", "Anything"
+                "If", "you", "Tell", "truth", "You", "do", "not", "have", "remember", "Anything",
             ),
             $doc->getDocumentData()
         );

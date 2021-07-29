@@ -33,10 +33,10 @@ class KMeans extends Clusterer
      */
     public function __construct($n, DistanceInterface $d, CentroidFactoryInterface $cf, $cutoff = 1e-5)
     {
-        $this->dist = $d;
         $this->n = $n;
-        $this->cutoff = $cutoff;
+        $this->dist = $d;
         $this->centroidF = $cf;
+        $this->cutoff = $cutoff;
     }
 
     /**

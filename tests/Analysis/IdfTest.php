@@ -4,19 +4,20 @@ namespace NlpTools\Analysis;
 
 use NlpTools\Documents\TokensDocument;
 use NlpTools\Documents\TrainingSet;
+use PHPUnit\Framework\TestCase;
 
-class IdfTest extends \PHPUnit_Framework_TestCase
+class IdfTest extends TestCase
 {
     public function testIdf()
     {
         $ts = new TrainingSet();
         $ts->addDocument(
             "",
-            new TokensDocument(array("a","b","c","d"))
+            new TokensDocument(array("a", "b", "c", "d"))
         );
         $ts->addDocument(
             "",
-            new TokensDocument(array("a","c","d"))
+            new TokensDocument(array("a", "c", "d"))
         );
         $ts->addDocument(
             "",
@@ -26,22 +27,16 @@ class IdfTest extends \PHPUnit_Framework_TestCase
         $idf = new Idf($ts);
 
         $this->assertEquals(
-            0.405,
+            0.4054651081081644,
             $idf->idf("c"),
-            null,
-            0.001
         );
         $this->assertEquals(
-            1.098,
+            1.0986122886681098,
             $idf->idf("b"),
-            null,
-            0.001
         );
         $this->assertEquals(
-            1.098,
+            1.0986122886681098,
             $idf->idf("non-existing"),
-            null,
-            0.001
         );
         $this->assertEquals(
             0,

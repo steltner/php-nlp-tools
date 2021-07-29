@@ -21,18 +21,18 @@ class JaroDistance implements DistanceInterface
     /**
      * Count the number of positions that A and B differ.
      *
-     * @param string|array $A
-     * @param string|array $B
+     * @param string|array $a
+     * @param string|array $b
      * @return float The Jaro distance of the two strings A and B
      */
-    public function dist(&$A, &$B)
+    public function dist($a, $b)
     {
-        if (is_array($A) && is_array($B)) {
-            $str1_len = count($A);
-            $str2_len = count($B);
-        } elseif (is_string($A) && is_string($B)) {
-            $str1_len = strlen($A);
-            $str2_len = strlen($B);
+        if (is_array($a) && is_array($b)) {
+            $str1_len = count($a);
+            $str2_len = count($b);
+        } elseif (is_string($a) && is_string($b)) {
+            $str1_len = strlen($a);
+            $str2_len = strlen($b);
         } else {
             throw new InvalidArgumentException(
                 "JaroDistance accepts only strings or arrays, not mixed"
@@ -41,13 +41,13 @@ class JaroDistance implements DistanceInterface
 
         $distance = (int)floor(min($str1_len, $str2_len) / 2.0);
 
-        $commons1 = $this->getCommonCharacters($A, $B, $distance);
-        $commons2 = $this->getCommonCharacters($B, $A, $distance);
+        $commons1 = $this->getCommonCharacters($a, $b, $distance);
+        $commons2 = $this->getCommonCharacters($b, $a, $distance);
 
-        if (is_array($A) && is_array($B)) {
+        if (is_array($a) && is_array($b)) {
             if (($commons1_len = count($commons1)) == 0) return 0;
             if (($commons2_len = count($commons2)) == 0) return 0;
-        } elseif (is_string($A) && is_string($B)) {
+        } elseif (is_string($a) && is_string($b)) {
             if (($commons1_len = strlen($commons1)) == 0) return 0;
             if (($commons2_len = strlen($commons2)) == 0) return 0;
         }
@@ -74,19 +74,21 @@ class JaroDistance implements DistanceInterface
 
         $temp_string2 = $string2;
 
-        $commonCharacters = (is_string($string1) && is_string($string2)) ? '' : array();
+        $commonCharacters = is_string($string1) && is_string($string2) ? '' : array();
 
+// @TODO there is an error here, check comment, $temp_string2 and index $j
         for ($i = 0; $i < $str1_len; $i++) {
             $noMatch = true;
+
             for ($j = max(0, $i - $allowedDistance); $noMatch && $j < min($i + $allowedDistance + 1, $str2_len); $j++) {
-                if ($temp_string2[$j] == $string1[$i]) {
+                if (isset($temp_string2[$j]) && $temp_string2[$j] == $string1[$i]) {
                     $noMatch = false;
                     if (is_array($string1) && is_array($string2)) {
                         array_push($commonCharacters, $string1[$i]);
                     } elseif (is_string($string1) && is_string($string2)) {
                         $commonCharacters .= $string1[$i];
                     }
-                    $temp_string2[$j] = '';
+//                    $temp_string2 = substr_replace($temp_string2, '', $j, 1);
                 }
             }
         }

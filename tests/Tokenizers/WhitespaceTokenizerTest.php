@@ -2,7 +2,9 @@
 
 namespace NlpTools\Tokenizers;
 
-class WhitespaceTokenizerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class WhitespaceTokenizerTest extends TestCase
 {
     public function testTokenizerOnAscii()
     {
@@ -11,9 +13,9 @@ class WhitespaceTokenizerTest extends \PHPUnit_Framework_TestCase
         $s = "This is a simple space delimited string
         with new lines and many     spaces between the words.
         Also	tabs	tabs	tabs	tabs";
-        $tokens = array('This','is','a','simple','space','delimited','string',
-        'with','new','lines','and','many','spaces','between','the','words.',
-        'Also','tabs','tabs','tabs','tabs');
+        $tokens = array('This', 'is', 'a', 'simple', 'space', 'delimited', 'string',
+            'with', 'new', 'lines', 'and', 'many', 'spaces', 'between', 'the', 'words.',
+            'Also', 'tabs', 'tabs', 'tabs', 'tabs');
 
         $this->assertEquals(
             $tokens,
@@ -26,7 +28,7 @@ class WhitespaceTokenizerTest extends \PHPUnit_Framework_TestCase
         $tok = new WhitespaceTokenizer();
 
         $s = "Ελληνικό κείμενο για παράδειγμα utf-8 χαρακτήρων";
-        $tokens = array('Ελληνικό','κείμενο','για','παράδειγμα','utf-8','χαρακτήρων');
+        $tokens = array('Ελληνικό', 'κείμενο', 'για', 'παράδειγμα', 'utf-8', 'χαρακτήρων');
         // test tokenization of multibyte non-whitespace characters
         $this->assertEquals(
             $tokens,
@@ -34,7 +36,7 @@ class WhitespaceTokenizerTest extends \PHPUnit_Framework_TestCase
         );
 
         $s = "Here exists non-breaking space   ";
-        $tokens = array('Here','exists','non-breaking','space');
+        $tokens = array('Here', 'exists', 'non-breaking', 'space');
         // test tokenization of multibyte whitespace
         $this->assertEquals(
             $tokens,

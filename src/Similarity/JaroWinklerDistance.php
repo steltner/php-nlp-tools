@@ -12,6 +12,7 @@ namespace NlpTools\Similarity;
  */
 class JaroWinklerDistance extends JaroDistance implements DistanceInterface
 {
+    private $prefix;
 
     /**
      * @param float $prefix is a constant scaling factor for how much the score is adjusted upwards for having common
@@ -26,15 +27,15 @@ class JaroWinklerDistance extends JaroDistance implements DistanceInterface
     /**
      * Count the number of positions that A and B differ.
      *
-     * @param string $A
-     * @param string $B
-     * @return float    The JaroWinkler distance of the two strings A and B
+     * @param string|array $a
+     * @param string|array $b
+     * @return float The JaroWinkler distance of the two strings A and B
      */
-    public function dist(&$A, &$B)
+    public function dist($a, $b)
     {
-        $distance = parent::dist($A, $B);
+        $distance = parent::dist($a, $b);
 
-        $prefixLength = $this->getPrefixLength($A, $B);
+        $prefixLength = $this->getPrefixLength($a, $b);
 
         $prefix = $this->prefix;
 
