@@ -1,4 +1,7 @@
-vendor/
+.phpunit.result.cache
+vendor
+composer.lock
+
+.idea
 nbproject/private/
 nbproject
-composer.lock
